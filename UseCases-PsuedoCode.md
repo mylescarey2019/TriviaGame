@@ -10,7 +10,7 @@ show different results content.  After completing all 10 questions chance to pla
 Planning on pool of 30 questions which will not repeat until three sets of 10 played.
 Start button to begin game and next 10 to continue with restart after 3 sets exhausted.
 
-![preliminary wireframe drawing](assets/images/wireframe0.jpg)
+![preliminary wireframe drawing](assets/images/wireframe0.png)
 
 ## Requirement Note
 
