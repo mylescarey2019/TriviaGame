@@ -4,27 +4,22 @@ Trivia Game - Periodic Table of Elements
 
 ## Description
 
-This is an HTML, CSS, javascript, JQuery(for all dynamic page activity) role playing "combat" style game using the theme of the 2020 Democratic Nomination.
-campaign and 2020 general election as a bonus round.
-The player chooses a candidate from eight choices and plays the whole game as that candidate.
-One by one the player faces off against the other candidates and campaigns to victory or loss against the current opponent.
-If all 7 opponents are defeated the player wins the nomination and advances to the bonus round of the 2020 general election
-against the sitting president.
-A "News Feed" message box provides information and instructions during game play.
-The player uses a multi-purpose button to move thru the "combat" rounds and advance from game page to the next.
-The player clicks on candidate images ("badges") to select their candidate and opponents.
-A chance to play again is presented whenever the player has lost - either in the nomination round or bonus round. 
+This is a quiz game (trivia) themed on the Periodic Table of Elements.
+The design  is a repsonsive first using HTML, CSS, Bootstrap, javascript and JQuery(for all dynamic page activity).
+The player will answer a series of 10 multiple choice questions.  The player is allotted 15 seconds to answer each question.
+After answering page will show the results/correct answer and pause for 3 seconds until next question loads.
+After 10 questions the player will be shown there results:  correct, incorrect and time-expired and then given chance to play
+another set of 10 questions.  There will also be a progress bar visible during play showing correct and incorrect bars.
+Once all sets of questions have been used the player will have an option to restart the whole series of questions sets again.
 
+![Periodic Element Quis](assets/images/wireframe1.png)
 
-![Democratic Nomination](assets/images/wireframe.png)
-
-![Election Night](assets/images/wireframe-election.png)
 
 ## Getting Started
 
 ### Dependencies
 
-* not responsive design, requires viewport of about 1024x576 for best experience 
+* none - responsive design usable on phone, table, laptop or desktop
 
 ### Installing
 
@@ -32,23 +27,15 @@ A chance to play again is presented whenever the player has lost - either in the
 
 ### Executing program
 
-* open in browser and follow "News Feed" instructions
-*   1. click on characters to select
-    2. use multi-use button for combat and page advance
-    3. play again after win or loss
+* open in browser and follow instructions
+*   1. click on unordered list of possible answers for each question
+    2. play another set of 10 questions after completing one
+    3. option to re-play all sets of questions after they have been completed
     
 
 ## Help
 
-player badges show current "Favorable" % - this is their "Health" points
-player attack rating goes up with each attack
-when choosing opponent know that low Heath character could have a slightly stronger attack rating
-and high Health character could have slighly weaker attack rating - so there is some variablity.
-Road to victory is generally to attack low Health opponents first.
-But know when choosing your character that a low Health one could win the game (sometimes)
-if played well and if chance falls right.  Likewise a high Health character doesn't
-guarenteed you will make to the general election.
-See requirement note in [UseCases and Psuedo Code](UseCases-PsuedoCode.md)for more details
+For further development details see [UseCases and Psuedo Code](UseCases-PsuedoCode.md)
 
 ## Authors
 
