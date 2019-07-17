@@ -1,10 +1,64 @@
 /* ---------------------------------------------------------
-javascript - Democratic Nomination Campaign Game
+CSS - Periodic Table Trivia Game
 --------------------------------------------------------- */
 
 /* NEEDS some serious refactoring sweep to clean up and consolidate */
 
+.container { 
+  /* background-color: lightgray; */
+  width: 100%;
+  height: auto;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 50%;
+  background-color: none;
+}
+
 body {
+  background-image: url(../images/the-periodic-table-1200.jpeg);
+  background-repeat: no-repeat;
+  /* background-position: center; */
+  background-size: cover;
+  background-origin: center;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  /* max-width: 960px; */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.jumbotron {
+  margin-top: 40px;
+  /* width: 600px; */
+  visibility: visible;
+  /* background: rgba(194,196,197, 0.85); */
+  background-color: rgba(190,183,171,.85);
+  font-weight: bolder;
+  margin-left: 10%;
+  margin-right: 10%;
+
+
+}
+
+nav {
+  background-color: #7e7058;
+}
+
+
+#timer {
+  color: white;
+  font-weight: 200;
+  font-size: 24px;
+
+
+}
+
+.list-group-item {
+  text-align: center;
+}
+/* body {
   margin-left: auto;
   margin-right: auto;
 }
@@ -145,7 +199,7 @@ body {
   border-radius: 5px;
   background-color: rgba(224, 224, 237, 1);
   /* background-color: rgba(250, 242, 4, 0.7); */
-}
+/* }
 
 #dustbin-top {
   position: fixed;
@@ -168,9 +222,9 @@ body {
   color: black;
   border-radius: 0px 0px 5px 5px;
   background-color: rgba(224, 224, 237, 0.5);
-}
+} */
 
-.candidate {
+/* .candidate {
   position: relative;
   width: 100px;
   height: 100px;
@@ -201,7 +255,7 @@ body {
   /* padding: 5px;
   margin-top: 10px;
   line-height: 20px; */
-  font-weight: bold;
+  /* font-weight: bold;
   font-size: 18px;
 }
 
@@ -215,7 +269,7 @@ body {
   /* padding: 5px;
   margin-top: 10px;
   line-height: 20px; */
-  font-weight: bold;
+  /* font-weight: bold;
   font-size: 12px;
 }
 
@@ -240,4 +294,4 @@ body {
   bottom: 105px;
   left: 530px;
 }
-
+  */ 
