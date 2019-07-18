@@ -3,7 +3,7 @@
 Trivia Game - Periodic Table of Elements
 
 ## Description
-
+wire
 This is a quiz game (trivia) themed on the Periodic Table of Elements.
 The design  is a repsonsive first using HTML, CSS, Bootstrap, javascript and JQuery(for all dynamic page activity).
 The player will answer a series of 10 multiple choice questions.  The player is allotted 15 seconds to answer each question.

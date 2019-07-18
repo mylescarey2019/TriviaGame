@@ -1,5 +1,3 @@
-// saved state of of 7-17-19 9:55pm
-
 // --------------------------------------------------------
 // javascript Periodic Table of Elements Quiz game
 // ---------------------------------------------------------
@@ -166,15 +164,10 @@ var qElement =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unf
                  {"name": "Helium", "symbol": "He", "elementQuestion": "Would have been better choice for use in Hindenburg Zeppelin","choices":["Pb-82","He-2","Cl-17","Hg-80"],"answerIndex":1,
                  "factoid": "Modern airships use Helium(He-2) gas due to its non-flammable and 92% buoyancy properties"}, 
                  {"name": "Lithium", "symbol": "Li", "elementQuestion": "Don't leave your phone without it","choices":["K-19","Na-11","Li-3","Pu-94"],"answerIndex":2,
-                 "factoid": "Lithium(Li-3) is a main component in cell phone batteries"},
-                 {"name": "Lead", "symbol": "Pb", "elementQuestion": "X-Ray technician make use of this","choices":["F-9","O-8","Cu-29","Pb-82"],"answerIndex":3,
-                 "factoid": "Lead(Pb-82) is used in for shielding when taking X-rays "},
-                 {"name": "Copper", "symbol": "Cu", "elementQuestion": "Zinc replaced which of these in the modern US penny?","choices":["Cu-29","Ag-47","Mg-12","Au-79"],"answerIndex":0,
-                 "factoid": "Copper(Cu-29) was the main alloy in US pennys until 1982"},
-                 {"name": "Mercury", "symbol": "Hg", "elementQuestion": "A metal you can pour","choices":["Ni-28","Hg-80","Xe-54","Ne-10"],"answerIndex":1,
-                 "factoid": "Mercury(Hg-80) is the only metal that is liquid at standard temperature and pressure"}
-
+                 "factoid": "Lithium(Li-3) is a main component in cell phone batteries"}
                 ];
+
+
 
 
 // ----------------------------------------------------------
@@ -183,14 +176,19 @@ var qElement =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unf
 // - refactored using deconstruction (study this more in depth for understanding)
 // - refactored using class
 class Question {
-  constructor(array) {
+  constructor(name, symbol, elementQuestion, choices, answerIndex, factoid) {
     console.log("in constructor.Question");
-    this.name = array.name;
-    this.symbol = array.symbol;
-    this.elementQuestion = array.elementQuestion;
-    this.choices = array.choices;
-    this.answerIndex = array.answerIndex;
-    this.factoid = array.factoid;
+    console.log(name + " " + symbol);
+    console.log(elementQuestion);
+    console.log(choices);
+    console.log(answerIndex);
+    console.log(factoid);
+    this.name = name;
+    this.symbol = symbol;
+    this.elementQuestion = elementQuestion;
+    this.choices = choices;
+    this.answerIndex = answerIndex;
+    this.factoid = factoid;
   }
 
   // method to determine if answer is correct
@@ -200,39 +198,34 @@ class Question {
   // remember to having caller use zero based index
   return index === this.answerIndex;
   }
-}
+};
+
 
 // ----------------------------------------------------------
 // class for pool of questions - 
 // ----------------------------------------------------------
 class QuestionPool {
-  constructor(numberOfQuestions) { //,availableQuestions,questionArray) {
+  constructor(numberOfQuestions,availableQuestions,questionArray) {
     console.log("in constructor.QuestionPool");
+    // might end up being useful
     this.numberOfQuestions = numberOfQuestions;
-
     // intended to be a correlation index into array of question objects using indexOf()
     // this would be to randomly select the next question
-    // this.availableQuestions = availableQuestions;
-    // // array of question objects
-    // this.questionArray = questionArray
+    this.availableQuestions = availableQuestions;
+    // array of question objects
+    this.questionArray = questionArray
   }
- 
-  // intended to be a correlation index into array of question objects using indexOf()
-  // this would be to randomly select the next question
-  availableQuestions = [];
-  // array of question objects
-  questionArray = [];
 
   // method to reset the question pool's questions (i.e. questionPool.questionArray )
   resetPool(questionData) {
     console.log("in questionPool.resetPool");
     console.log("number of questions: " + this.numberOfQuestions);
     // clear the arrays 
-    this.availableQuestions.splice(0,this.availableQuestions.length);
-    this.questionArray.splice(0,this.questionArray.length);
+    // this.availableQuestions.splice(0,this.availableQuestions.length);
+    // this.questionArray.splice(0,this.questionArray.length);
 
     // populate the available question array
-    for ( let i = 0; i < this.numberOfQuestions; i++) {
+    for (let i = 0; i < this.numberOfQuestions; i++) {
       this.availableQuestions.push(i);
     };
     console.log("available array: " + this.availableQuestions);
@@ -259,33 +252,31 @@ class QuestionPool {
 
 // test Question and QuestionPool classes 
 // initial some variables to be used in questionPool
-var numberOfQuestions = 6;
+var numberOfQuestions = 3;
 var availableQuestions = [];
 var questionArray = [];
 
-var gameQuestions = new QuestionPool(numberOfQuestions);
-// var gameQuestions = new QuestionPool(numberOfQuestions,availableQuestions,questionArray);
+var gameQuestions = new QuestionPool(numberOfQuestions,availableQuestions,questionArray);
 gameQuestions.resetPool(qElement);
-
 
 // unpack and log the gameQuestions to see if it was loaded as intended
 console.log("---------------------------------------");
 console.log("in unpacking of gameQuestions object...");
 console.log("number of questions: " + gameQuestions.numberOfQuestions);
 console.log("available questions: " + gameQuestions.availableQuestions);
-console.log("starting unpacking of gameQuestions's question object array...")
-console.log("...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-gameQuestions.questionArray.forEach(element => {
-  console.log("question element name: " + element.name);
-  console.log("question element symbol:" + element.symbol);
-  console.log("question: " + element.elementQuestion);
-  console.log("......>>>>>>>>>>>>>>>>>>>>>>>>>>")
-  element.choices.forEach(element => {
-    console.log("...answer choice: " + element);
-  });
-  console.log("index for correct answer: " + element.answerIndex);
-  console.log("factoid: " + element.factoid);
-});
+console.log("starting unpacking of gameQuestions's question object array...");
+console.log("...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+// gameQuestions.questionArray.forEach(element => {
+//   console.log("question element name: " + element.name);
+//   console.log("question element symbol:" + element.symbol);
+//   console.log("question: " + element.elementQuestion);
+//   console.log("......>>>>>>>>>>>>>>>>>>>>>>>>>>")
+//   element.choices.forEach(element => {
+//     console.log("...answer choice: " + element);
+//   });
+//   console.log("index for correct answer: " + element.answerIndex);
+//   console.log("factoid: " + element.factoid);
+// });
 
 
 // manual process to build gameQuestions.question array

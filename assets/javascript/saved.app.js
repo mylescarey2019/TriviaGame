@@ -166,116 +166,132 @@ var qElement =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unf
                  {"name": "Helium", "symbol": "He", "elementQuestion": "Would have been better choice for use in Hindenburg Zeppelin","choices":["Pb-82","He-2","Cl-17","Hg-80"],"answerIndex":1,
                  "factoid": "Modern airships use Helium(He-2) gas due to its non-flammable and 92% buoyancy properties"}, 
                  {"name": "Lithium", "symbol": "Li", "elementQuestion": "Don't leave your phone without it","choices":["K-19","Na-11","Li-3","Pu-94"],"answerIndex":2,
-                 "factoid": "Lithium(Li-3) is a main component in cell phone batteries"},
-                 {"name": "Lead", "symbol": "Pb", "elementQuestion": "X-Ray technician make use of this","choices":["F-9","O-8","Cu-29","Pb-82"],"answerIndex":3,
-                 "factoid": "Lead(Pb-82) is used in for shielding when taking X-rays "},
-                 {"name": "Copper", "symbol": "Cu", "elementQuestion": "Zinc replaced which of these in the modern US penny?","choices":["Cu-29","Ag-47","Mg-12","Au-79"],"answerIndex":0,
-                 "factoid": "Copper(Cu-29) was the main alloy in US pennys until 1982"},
-                 {"name": "Mercury", "symbol": "Hg", "elementQuestion": "A metal you can pour","choices":["Ni-28","Hg-80","Xe-54","Ne-10"],"answerIndex":1,
-                 "factoid": "Mercury(Hg-80) is the only metal that is liquid at standard temperature and pressure"}
-
+                 "factoid": "Lithium(Li-3) is a main component in cell phone batteries"}
                 ];
 
 
+
+
 // ----------------------------------------------------------
-// class for Question
+// constructor function: class for Question
 // ----------------------------------------------------------
 // - refactored using deconstruction (study this more in depth for understanding)
-// - refactored using class
-class Question {
-  constructor(array) {
-    console.log("in constructor.Question");
-    this.name = array.name;
-    this.symbol = array.symbol;
-    this.elementQuestion = array.elementQuestion;
-    this.choices = array.choices;
-    this.answerIndex = array.answerIndex;
-    this.factoid = array.factoid;
-  }
+// for example - do the property names have to be identical?
+function Question({name, symbol, elementQuestion, choices, answerIndex, factoid}) {
+  console.log("in constructor.Question");
+  this.name = name;
+  this.symbol = symbol;
+  this.elementQuestion = elementQuestion;
+  this.choices = choices;
+  this.answerIndex = answerIndex;
+  this.factoid = factoid;
 
-  // method to determine if answer is correct
-  // remember to have caller use zero based index
-  isCorrect(index) {
-  console.log("in questionPool.isCorrect");
-  // remember to having caller use zero based index
-  return index === this.answerIndex;
-  }
-}
+  // methods(if any) go below:
+};
+
+// // examples and exercises with tutor David Hammond
+// // here are we adding the isCorrect to Question constructor?
+// // where does index come from ?? is that from class BaseQuestion?
+// // seek to understand
+// Question.prototype.isCorrect = function(index){   
+//   return +index === +this.answerIndex;
+//  }
+
+// var myQ2 = new Question({name:'Something', symbol:'H', elementQuestion:'Some q', choices:['asdas','asdasd','adasd'], answerIndex:1, factoid:'some fact'})
+// myQ2.isCorrect(5)
+// class BaseQuestion {
+//   constructor({elementQuestion, choices, answerIndex}){
+//     this.elementQuestion = elementQuestion;
+//     this.choices = choices;
+//     this.answerIndex = answerIndex;
+//   }
+
+//   isCorrect(index){
+//     return +index === +this.answerIndex;
+//   }
+// }
+
+// class QuestionBetter extends BaseQuestion {
+//   constructor({name, symbol, elementQuestion, choices, answerIndex, factoid}) {
+//     super(elementQuestion, choices, answerIndex)
+//     this.name = name;
+//     this.symbol = symbol;
+//     this.factoid = factoid;
+//   }
+
+
+// }
+
+// var myQ = new QuestionBetter({name:'Something', symbol:'H', elementQuestion:'Some q', choices:['asdas','asdasd','adasd'], answerIndex:1, factoid:'some fact'})
+// myQ.isCorrect(3)
 
 // ----------------------------------------------------------
-// class for pool of questions - 
+// object for pool of questions - 
 // ----------------------------------------------------------
-class QuestionPool {
-  constructor(numberOfQuestions) { //,availableQuestions,questionArray) {
-    console.log("in constructor.QuestionPool");
-    this.numberOfQuestions = numberOfQuestions;
+var questionPool = {
+  // might end up being useful
+  numberOfQuestions: 3,
 
-    // intended to be a correlation index into array of question objects using indexOf()
-    // this would be to randomly select the next question
-    // this.availableQuestions = availableQuestions;
-    // // array of question objects
-    // this.questionArray = questionArray
-  }
- 
   // intended to be a correlation index into array of question objects using indexOf()
   // this would be to randomly select the next question
-  availableQuestions = [];
+  availableQuestions: [0,1,2],
+
   // array of question objects
-  questionArray = [];
+  questionArray: [],
 
   // method to reset the question pool's questions (i.e. questionPool.questionArray )
-  resetPool(questionData) {
+  resetPool: function(questionData) {
     console.log("in questionPool.resetPool");
-    console.log("number of questions: " + this.numberOfQuestions);
-    // clear the arrays 
+    // clear the arrays - although they should already be based on program state
     this.availableQuestions.splice(0,this.availableQuestions.length);
     this.questionArray.splice(0,this.questionArray.length);
 
     // populate the available question array
-    for ( let i = 0; i < this.numberOfQuestions; i++) {
+    for ( i = 0; i < this.numberOfQuestions; i++) {
       this.availableQuestions.push(i);
     };
-    console.log("available array: " + this.availableQuestions);
-  
+    // another way of doing the above using map
+    // to-do:  review map so i can understand this 
+    //Array(this.numberOfQuestions).fill(0).map((_, i) => i);
+
     // instantiate question object for every questionData row
     // and push into questionPool's question object array
-    console.log("question data is: " + questionData);
     questionData.forEach(element => {
       console.log("question row is: " + element);
-      this.questionArray.push(new Question(element));
-      // questionArray.push(new Question(element));
+      questionPool.questionArray.push(new Question(element));
     })
-  }
+  },
 
   // method to get a random question
-  getQuestion() {
+  getQuestion: function() {
     console.log("in questionPool.getQuestion");
     // randomly select from availableQuestions
     // remove element from availableQuestions - it is going to be consumed
     // index into the questionArray and return the correleted question object
-  }
+  },
+
+  // method to determine if answer is correct
+  isCorrect: function(index) {
+    console.log("in questionPool.isCorrect");
+    // remember to having caller use zero based index
+    return index === this.answerIndex;
+
+    }
+ 
 };
 
 
-// test Question and QuestionPool classes 
-// initial some variables to be used in questionPool
-var numberOfQuestions = 6;
-var availableQuestions = [];
-var questionArray = [];
+// test Question constructor
+questionPool.resetPool(qElement);
 
-var gameQuestions = new QuestionPool(numberOfQuestions);
-// var gameQuestions = new QuestionPool(numberOfQuestions,availableQuestions,questionArray);
-gameQuestions.resetPool(qElement);
-
-
-// unpack and log the gameQuestions to see if it was loaded as intended
+// unpack and log the questionPool to see if it was loaded as intended
 console.log("---------------------------------------");
-console.log("in unpacking of gameQuestions object...");
-console.log("number of questions: " + gameQuestions.numberOfQuestions);
-console.log("available questions: " + gameQuestions.availableQuestions);
-console.log("starting unpacking of gameQuestions's question object array...")
+console.log("in unpacking of questionPool object...");
+console.log("number of questions: " + questionPool.numberOfQuestions);
+console.log("available questions: " + questionPool.availableQuestions);
+console.log("starting unpacking of questionPool's question object array...")
 console.log("...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-gameQuestions.questionArray.forEach(element => {
+questionPool.questionArray.forEach(element => {
   console.log("question element name: " + element.name);
   console.log("question element symbol:" + element.symbol);
   console.log("question: " + element.elementQuestion);
@@ -288,7 +304,7 @@ gameQuestions.questionArray.forEach(element => {
 });
 
 
-// manual process to build gameQuestions.question array
+// manual process to build questionPool.question array
 // qElement.forEach(element => {
 //   console.log("in loop to call Question()"); 
 //   console.log("qElement is: " + element);
