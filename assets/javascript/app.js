@@ -156,14 +156,16 @@
 var numberOfQuestions = 10;
 var availableQuestions = [];
 var questionArray = [];
-var questionsRemaining = 10;
+var questionsRemaining = 3;
 // timers for question allotment & for transition between questions
 var questionTimer;
 var intermissionTimer;
 // keep these in sync
-var questionTime = 10;
-var intermissionTime = 5;
-var timerStartliteral = "00:10";
+var questionTimeConstant = 7;
+var intermissionTimeConstant = 4;
+var questionTime = questionTimeConstant;
+var intermissionTime = intermissionTimeConstant;
+var timerStartliteral = "00:05";
 
 // interval for timers
 var questionIntervalId;
@@ -184,6 +186,7 @@ var intermissionIntervalRunning = false;
 function startQuestionCountdown() {
   console.log("in global.startQuestionCountdown");
   if (!questionIntervalRunning) {
+    resetQuestionCountdown();
     questionIntervalId = setInterval(questionIntervalCountdown, 1000);
     questionIntervalRunning = true;
   }
@@ -199,15 +202,15 @@ function stopQuestionCountdown() {
 // reset question countdown timer
 function resetQuestionCountdown() {
   console.log("in global.resetQuestionCountdown");
-  console.log("question timer: " + questionTime);
-  questionTime = 0;
+  // console.log("question timer: " + questionTime);
+  questionTime = questionTimeConstant;
   // update timer on page
   $("#timer").text(displayableTime(questionTime));
 }
 
 // decrement the question countdown timer
 function questionIntervalCountdown() {
-  console.log("question timer decrement: " + questionTime);
+  console.log("in global.questionIntervalCountdown, time: " + questionTime);
   // decrement time by 1
   questionTime--;
   // update timer on page
@@ -215,7 +218,17 @@ function questionIntervalCountdown() {
   //  time expired
   if (questionTime === 0) {
     stopQuestionCountdown();
-    console.log("in global.questionIntervalCountdown");
+    questionsRemaining--;
+    showAnswer();
+    if (questionsRemaining > 0) {
+      startIntermissionCountdown();
+    }
+    else {
+      console.log("in global.questionIntervalCountdown - no more questions");
+      console.log("run game end procedure to show results")
+      console.log("this is where a restart procedure must go");
+      resetGame();
+    }
   }
 } 
 
@@ -241,6 +254,7 @@ function displayableTime(t) {
 function startIntermissionCountdown() {
   console.log("in global.startIntermissionCountdown");
   if (!intermissionIntervalRunning) {
+    resetIntermissionCountdown();
     intermissionIntervalId = setInterval(intermissionIntervalCountdown, 1000);
     intermissionIntervalRunning = true;
   }
@@ -251,14 +265,14 @@ function stopIntermissionCountdown() {
   console.log("in global.stopIntermissionCountdown");
   clearInterval(intermissionIntervalId);
   intermissionIntervalRunning = false;
+  showQuestion();
+  startQuestionCountdown();
 }
 
 // reset intermission countdown timer
-function resetIntermissionInterval() {
+function resetIntermissionCountdown() {
   console.log("in global.resetIntermissionCountdown");
-  intermissionTime = 0;
-  // update timer on page
-  console.log("intermission timer: " + intermissionTime);
+  intermissionTime = intermissionTimeConstant;
 }
 
 // decrement the question countdown timer
@@ -282,11 +296,14 @@ function showQuestion() {
 // this will belong in the question class or game object
 // for now just trying to learn how to create the flow
 function showAnswer() {
-  console.log("in global.showAnswer");
-  questionsRemaining--;
-  console.log("questions remaining: " + questionsRemaining);
+  console.log("in global.showAnswer, questions remaining: " + questionsRemaining);
 }
 
+function resetGame() {
+  console.log("in global.resetGame");
+  console.log("1: need to run gameQuestions.resetPool(inlineQuestionData);" );
+  console.log("2. need to check to see what global needs to be reset");
+}
 // // this will belong in the question class or game object
 // // for now just trying to learn how to create the flow
 // function loadQuestion() {
@@ -500,10 +517,20 @@ $(".list-group-item-light").on("click", function() {
   console.log("in list-group-item-light.on.click");
   // stop the question timer
   stopQuestionCountdown();
+  // decrement questions remaining
+  questionsRemaining--;
   // show the answer
   showAnswer();
   // start the intermission timer for transitioning between questions
-  startIntermissionCountdown();
+  if(questionsRemaining > 0) {
+    startIntermissionCountdown();
+  }
+  else {
+    console.log("in global.questionIntervalCountdown - no more questions");
+    console.log("run game end procedure to show results")
+    console.log("this is where a restart procedure must go");
+    resetGame();
+  }
 });
 
 // intermission is over
