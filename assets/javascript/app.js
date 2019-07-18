@@ -151,17 +151,155 @@
 // ---------------------------------------------------------
 // Global Variables
 // ---------------------------------------------------------
+// initial some variables to be used in questionPool
+// maybe this goes in a game object but not sure
+var numberOfQuestions = 10;
+var availableQuestions = [];
+var questionArray = [];
+var questionsRemaining = 10;
+// timers for question allotment & for transition between questions
+var questionTimer;
+var intermissionTimer;
+// keep these in sync
+var questionTime = 10;
+var intermissionTime = 5;
+var timerStartliteral = "00:10";
+
+// interval for timers
+var questionIntervalId;
+var intermissionIntervalId;
+
+
+
+// prevents the clock from being sped up unnecessarily
+// may not need this
+var questionIntervalRunning = false;
+var intermissionIntervalRunning = false;
 
 // ---------------------------------------------------------
 // Global Functions:
 // ---------------------------------------------------------
 
- 
+// start the question countdown timer
+function startQuestionCountdown() {
+  console.log("in global.startQuestionCountdown");
+  if (!questionIntervalRunning) {
+    questionIntervalId = setInterval(questionIntervalCountdown, 1000);
+    questionIntervalRunning = true;
+  }
+}
+
+// stop the question countdown timer
+function stopQuestionCountdown() {
+  console.log("in global.stopQuestionCountdown");
+  clearInterval(questionIntervalId);
+  questionIntervalRunning = false;
+}
+
+// reset question countdown timer
+function resetQuestionCountdown() {
+  console.log("in global.resetQuestionCountdown");
+  console.log("question timer: " + questionTime);
+  questionTime = 0;
+  // update timer on page
+  $("#timer").text(displayableTime(questionTime));
+}
+
+// decrement the question countdown timer
+function questionIntervalCountdown() {
+  console.log("question timer decrement: " + questionTime);
+  // decrement time by 1
+  questionTime--;
+  // update timer on page
+  $("#timer").text(displayableTime(questionTime));
+  //  time expired
+  if (questionTime === 0) {
+    stopQuestionCountdown();
+    console.log("in global.questionIntervalCountdown");
+  }
+} 
+
+// convert countdown to displayable time
+function displayableTime(t) {
+  var minutes = Math.floor(t / 60);
+  var seconds = t - (minutes * 60);
+
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+  if (minutes === 0) {
+    minutes = "00";
+  }
+  else if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  return minutes + ":" + seconds;
+}
+
+// start the intermission countdown timer
+function startIntermissionCountdown() {
+  console.log("in global.startIntermissionCountdown");
+  if (!intermissionIntervalRunning) {
+    intermissionIntervalId = setInterval(intermissionIntervalCountdown, 1000);
+    intermissionIntervalRunning = true;
+  }
+}
+
+// stop the intermission countdown timer
+function stopIntermissionCountdown() {
+  console.log("in global.stopIntermissionCountdown");
+  clearInterval(intermissionIntervalId);
+  intermissionIntervalRunning = false;
+}
+
+// reset intermission countdown timer
+function resetIntermissionInterval() {
+  console.log("in global.resetIntermissionCountdown");
+  intermissionTime = 0;
+  // update timer on page
+  console.log("intermission timer: " + intermissionTime);
+}
+
+// decrement the question countdown timer
+function intermissionIntervalCountdown() {
+  console.log("intermission timer decrement: " + intermissionTime);
+  // decrement time by 1
+  intermissionTime--;
+  //  time expired
+  if (intermissionTime === 0) {
+    stopIntermissionCountdown() 
+  }
+} 
+
+
+// this will belong in the question class or game object
+// for now just trying to learn how to create the flow
+function showQuestion() {
+  console.log("in global.showQuestion");
+}
+
+// this will belong in the question class or game object
+// for now just trying to learn how to create the flow
+function showAnswer() {
+  console.log("in global.showAnswer");
+  questionsRemaining--;
+  console.log("questions remaining: " + questionsRemaining);
+}
+
+// // this will belong in the question class or game object
+// // for now just trying to learn how to create the flow
+// function loadQuestion() {
+//   // assuming there is a question available - need to check for that
+//   // 
+  
+// }
+
 // ---------------------------------------------------------
 // Objects, Classes & Methhods:
 // ---------------------------------------------------------
 
-var qElement =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unfortunate for Hindenburg Zeppelin","choices":["O-8","Sn-50","W-74","H-1"],"answerIndex":3,
+var inlineQuestionData =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unfortunate for Hindenburg Zeppelin","choices":["O-8","Sn-50","W-74","H-1"],"answerIndex":3,
                  "factoid": "Leaking Hydrogen(H-1) ignited by weather related electrostatic discharge was likely cause of Hindenburg's demise"},
                  {"name": "Helium", "symbol": "He", "elementQuestion": "Would have been better choice for use in Hindenburg Zeppelin","choices":["Pb-82","He-2","Cl-17","Hg-80"],"answerIndex":1,
                  "factoid": "Modern airships use Helium(He-2) gas due to its non-flammable and 92% buoyancy properties"}, 
@@ -171,8 +309,17 @@ var qElement =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unf
                  "factoid": "Lead(Pb-82) is used in for shielding when taking X-rays "},
                  {"name": "Copper", "symbol": "Cu", "elementQuestion": "Zinc replaced which of these in the modern US penny?","choices":["Cu-29","Ag-47","Mg-12","Au-79"],"answerIndex":0,
                  "factoid": "Copper(Cu-29) was the main alloy in US pennys until 1982"},
+
                  {"name": "Mercury", "symbol": "Hg", "elementQuestion": "A metal you can pour","choices":["Ni-28","Hg-80","Xe-54","Ne-10"],"answerIndex":1,
-                 "factoid": "Mercury(Hg-80) is the only metal that is liquid at standard temperature and pressure"}
+                 "factoid": "Mercury(Hg-80) is the only metal that is liquid at standard temperature and pressure"},
+                 {"name": "Oxygen", "symbol": "O", "elementQuestion": "Necessary to form water","choices":["He-2","Au-79","O-8","Ca-20"],"answerIndex":2,
+                 "factoid": "Oxygen(O-8) H2O is water: two Hydrongen atoms and 1 Oxygen atom"},
+                 {"name": "Plutonium", "symbol": "Pu", "elementQuestion": "Named after a planet that has since been demoted to minor/dwarf planet","choices":["Pu-92","Kr-36","Xe-54","Ir-77"],"answerIndex":0,
+                 "factoid": "Plutonium(Pu-94) was named for outer planet Pluto following namings of Uranium and Neptunium"},
+                 {"name": "Neon", "symbol": "Ne", "elementQuestion": "Downtown (1964 song by Petula Clark)...Linger on the sidewalks were the **** signs are pretty","choices":["Ti-22","F-9","Ne-10","Zr-40"],"answerIndex":2,
+                 "factoid": "Neon(Ne-10) is used to make neon signs "},
+                 {"name": "Carbon", "symbol": "C", "elementQuestion": "The elemental form of this includes one of the hardest substances and one of the softest ","choices":["Na-11","Sn-50","Rn-86","C-6"],"answerIndex":3,
+                 "factoid": "Carbon(C-6) elemental allotropic forms include diamond (hard) and graphite (soft)"}
 
                 ];
 
@@ -257,35 +404,8 @@ class QuestionPool {
 };
 
 
-// test Question and QuestionPool classes 
-// initial some variables to be used in questionPool
-var numberOfQuestions = 6;
-var availableQuestions = [];
-var questionArray = [];
-
-var gameQuestions = new QuestionPool(numberOfQuestions);
-// var gameQuestions = new QuestionPool(numberOfQuestions,availableQuestions,questionArray);
-gameQuestions.resetPool(qElement);
 
 
-// unpack and log the gameQuestions to see if it was loaded as intended
-console.log("---------------------------------------");
-console.log("in unpacking of gameQuestions object...");
-console.log("number of questions: " + gameQuestions.numberOfQuestions);
-console.log("available questions: " + gameQuestions.availableQuestions);
-console.log("starting unpacking of gameQuestions's question object array...")
-console.log("...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-gameQuestions.questionArray.forEach(element => {
-  console.log("question element name: " + element.name);
-  console.log("question element symbol:" + element.symbol);
-  console.log("question: " + element.elementQuestion);
-  console.log("......>>>>>>>>>>>>>>>>>>>>>>>>>>")
-  element.choices.forEach(element => {
-    console.log("...answer choice: " + element);
-  });
-  console.log("index for correct answer: " + element.answerIndex);
-  console.log("factoid: " + element.factoid);
-});
 
 
 // manual process to build gameQuestions.question array
@@ -308,7 +428,9 @@ gameQuestions.questionArray.forEach(element => {
   
 // });
 
-
+// ----------------------------------------------------------------------------
+// Events and timers
+// ----------------------------------------------------------------------------
 
 
 
@@ -320,9 +442,71 @@ gameQuestions.questionArray.forEach(element => {
 //  START OF GAME FLOW
 // ----------------------------------------------------------------------------
 
-// refactoring attempt to only have one master Game() function
-// game.startGame();
-// game.resetGame();
+// create object to hold all the question objects
+var gameQuestions = new QuestionPool(numberOfQuestions);
+// depracated:
+// var gameQuestions = new QuestionPool(numberOfQuestions,availableQuestions,questionArray);
+
+// initialize the pool by loading the question objects to it from the global question
+// data array - i.e 
+gameQuestions.resetPool(inlineQuestionData);
+
+// going to need a game object and a run function i think
+// game.run();
+
+
+// unpack and log the gameQuestions to see if it was loaded as intended
+// these are properties of the questionPool class object
+console.log("---------------------------------------");
+console.log("in unpacking of gameQuestions object...");
+console.log("number of questions: " + gameQuestions.numberOfQuestions);
+console.log("available questions: " + gameQuestions.availableQuestions);
+// next comes the property that is an array of question obects
+// so lets see what is in a question object - first some properties
+console.log("starting unpacking of gameQuestions's question object array...")
+console.log("...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+gameQuestions.questionArray.forEach(element => {
+  console.log("question element name: " + element.name);
+  console.log("question element symbol:" + element.symbol);
+  console.log("question: " + element.elementQuestion);
+  // within a question object there is an array object property that holds the answer choices
+  console.log("......>>>>>>>>>>>>>>>>>>>>>>>>>>")
+  element.choices.forEach(element => {
+    console.log("...answer choice: " + element);
+  });
+  // and finally the last properties of the question object
+  console.log("index for correct answer: " + element.answerIndex);
+  console.log("factoid: " + element.factoid);
+});
+
+
+
+//  prototyping - clicking the start button
+//  will start the game - in this case lets just start
+//  the answer countdown timer
+$("#start-game").on("click", function() {
+  console.log("in start-game.on.click");
+  // get and reveil next qustion
+  showQuestion();
+  // start the question countdown
+  startQuestionCountdown();
+  // also will want to disable the start button during quiz 
+  // do that here
+});
+
+//  cancel the question timer
+//  start the intermission timer
+$(".list-group-item-light").on("click", function() {
+  console.log("in list-group-item-light.on.click");
+  // stop the question timer
+  stopQuestionCountdown();
+  // show the answer
+  showAnswer();
+  // start the intermission timer for transitioning between questions
+  startIntermissionCountdown();
+});
+
+// intermission is over
 
 
 // // click event for candidate badges

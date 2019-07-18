@@ -34,14 +34,16 @@
       <script src="assets/javascript/bootstrap.min.js"></script>
 
       <!-- <nav class="navbar navbar-expand-sm justify-content-between navbar-dark bg-dark"> -->
-      <nav class="navbar navbar-expand-sm navbar-dark bg-#7e7058">
+      <nav class="navbar fixed-top navbar-expand-sm navbar-dark  bg-#7e7058">
+        <div class="container">
         <a class="navbar-brand" href="#">Periodic Table Quiz</a>
-        <div id="header">
-          <div>
-              <button type="button" class="btn btn-light" disabled>Next Quiz</button>
-          </div>
-          <div>
-              <button type="button" class="btn btn-light">Start/Restart</button>
+          <div id="header">
+            <div>
+                <button type="button" class="btn btn-light" disabled>Next Quiz</button>
+            </div>
+            <div>
+                <button id="start-game" type="button" class="btn btn-light">Start/Restart</button>
+            </div>
           </div>
         </div>
       </nav>
@@ -53,7 +55,7 @@
                     <p class="lead">Don't leave your phone without it</p>
                     <hr class="my-4">
                     <h3 id="timer">
-                        <span>00:00</span>
+                        <span>00:10</span>
                     </h3>
                     <br>
                     <div class="list-flush">
