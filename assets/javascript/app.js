@@ -159,120 +159,127 @@
 // Objects, Classes & Methhods:
 // ---------------------------------------------------------
 
-var qElement =  [{"name": "hydrogen", "symbol": "H", "elementQuestion": "Was unfortunate for Hindenburg Zeppelin"},
-                 {"name": "helium", "symbol": "He", "elementQuestion": "Would have been better choice to use in Hindenburg Zeppelin"},  
-                 {"name": "Lithium", "symbol": "Li", "elementQuestion": "Don't leave your phone without it"}, 
+var qElement =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion": "Was unfortunate for Hindenburg Zeppelin","choices":["O-8","Sn-50","W-74","H-1"],"answerIndex":3,
+                 "factoid": "Leaking Hydrogen(H-1) ignited by weather related electrostatic discharge was likely cause of Hindenburg's demise"},
+                 {"name": "Helium", "symbol": "He", "elementQuestion": "Would have been better choice for use in Hindenburg Zeppelin","choices":["Pb-82","He-2","Cl-17","Hg-80"],"answerIndex":1,
+                 "factoid": "Modern airships use Helium(He-2) gas due to its non-flammable and 92% buoyancy properties"}, 
+                 {"name": "Lithium", "symbol": "Li", "elementQuestion": "Don't leave your phone without it","choices":["K-19","Na-11","Li-3","Pu-94"],"answerIndex":2,
+                 "factoid": "Lithium(Li-3) is a main component in cell phone batteries"}
                 ];
 
-console.log(">>> " + qElement[0]["name"]);
 
-qElement.forEach(element => {
-  console.log("name: " + element["name"]);
-  console.log("symbol: " + element["symbol"]);
-  console.log("hint-question: " + element["elementQuestion"]);
-  console.log("==============");
-  
-});
+
 
 // ----------------------------------------------------------
-// constructor function: class for Questions
+// constructor function: class for Question
 // ----------------------------------------------------------
-function Question(elementArray) {
+function Question(questionSetRow) {
   console.log("in constructor.Question");
-  this.name = elementArray["name"];
-  this.symbol = elementArray["symbol"];
-  this.hint = elementArray["elementQuestion"];
-  // other properties to add:
-  //   4 answer choices (use array)
-  //   index for correct answer
-  //   answer facts or trivia
+  this.name = questionSetRow["name"];
+  this.symbol = questionSetRow["symbol"];
+  this.elementQuestion = questionSetRow["elementQuestion"];
+  this.choices = questionSetRow["choices"];
+  this.answerIndex = questionSetRow["answerIndex"];
+  this.factoid = questionSetRow["factoid"];
 
-  // methods go below
+  // methods(if any) go below:
 };
 
-// intent is loop thru qElement array data and call Question constructor
-// to create a question object for each array row
-// push the created question object into a question array
-// finally, call a constructor for QuestionPool to create a questionPool object
-// this array of objects will be part of waht is feed to that constructor
-
 // ----------------------------------------------------------
-// constructor function: class for QuestionPool
+// object for pool of questions - 
 // ----------------------------------------------------------
-// function QuestionPool(elementArray) {
-//   console.log("in constructor.Question");
-//   this.name = elementArray["name"];
-//   this.symbol = elementArray["symbol"];
-//   this.hint = elementArray["elementQuestion"];
-//   // other properties to add:
-//   //   4 answer choices (use array)
-//   //   index for correct answer
-//   //   answer facts or trivia
-
-//   // methods go below
-// };
-
-
-
 var questionPool = {
+  // might end up being useful
   numberOfQuestions: 3,
+
   // intended to be a correlation index into array of question objects using indexOf()
   // this would be to randomly select the next question
-  availableQuestions: ['H','He','Li'],
+  availableQuestions: [0,1,2],
+
   // array of question objects
   questionArray: [],
 
-  // methods:
-  // getQuestion: function() {
+  // method to reset the question pool's questions (i.e. questionPool.questionArray )
+  resetPool: function(questionData) {
+    console.log("in questionPool.resetPool");
+    // clear the arrays - although they should already be based on program state
+    this.availableQuestions.splice(0,this.availableQuestions.length);
+    this.questionArray.splice(0,this.questionArray.length);
+
+    // populate the available question array
+    for ( i = 0; i < this.numberOfQuestions; i++) {
+      this.availableQuestions.push(i);
+    };
+
+    // instantiate question object for every questionData row
+    // and push into questionPool's question object array
+    questionData.forEach(element => {
+      console.log("question row is: " + element);
+      questionPool.questionArray.push(new Question(element));
+    })
+  },
+
+  // method to get a random question
+  getQuestion: function() {
+    console.log("in questionPool.getQuestion");
     // randomly select from availableQuestions
     // remove element from availableQuestions - it is going to be consumed
     // index into the questionArray and return the correleted question object
-  // }
-
+  }
+ 
 };
 
 
-// var candidate = {
-// //         1. Candidate arrays (5, element array)
-// //             1. Name
-// //             2. Base attack, current attack, health,      
-// //             3. defense
-// //             4. isMovable
-//   candidateName: ['biden','harris','delaney','williamson','sanders','booker','inslee','gabbard','trump'],
-//   candidateIsMovable: [true,true,true,true,true,true,true,true,false],
-//   candidateBaseOffense: [0,0,0,0,0,0,0,0,0],
-//   candidateBaseDefense: [0,0,0,0,0,0,0,0,0],
-//   candidateCurrentOffense: [0,0,0,0,0,0,0,0,0],
-//   candidateHealth: [0,0,0,0,0,0,0,0,0],
-//   // helper arrays for randomization and reset of candidate attributes
-//   typeOfProfile: [],
-//   profileType: [],
-//   profileHealth: [],
-//   profileAttack: [],
-//   profileDefense: [],
-//   electionHealthResetFactor: 0,
-//   electionOffenseResetFactor: 0,
-//   attackMin: 0,
-//   attackMax: 0,
-//   defenseMin: 0,
-//   defenseMax: 0,
-//   lowFactorAdjustUp: 0,
-//   highFactorAdjustDown: 0,
-//   lowFactorAdjustDown: 0,
+// test Question constructor
+questionPool.resetPool(qElement);
 
-//   // this is the profile Type array
-//   buildProfileArray: function() {
-//     this.typeOfProfile = ['a','a-','b','b-','c','c-','d','d-'];
-//     console.log("type of profiles: " + this.typeOfProfile);
+// unpack and log the questionPool to see if it was loaded as intended
+console.log("---------------------------------------");
+console.log("in unpacking of questionPool object...");
+console.log("number of questions: " + questionPool.numberOfQuestions);
+console.log("available questions: " + questionPool.availableQuestions);
+console.log("starting unpacking of questionPool's question object array...")
+console.log("...>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+questionPool.questionArray.forEach(element => {
+  console.log("question element name: " + element.name);
+  console.log("question element symbol:" + element.symbol);
+  console.log("question: " + element.elementQuestion);
+  console.log("......>>>>>>>>>>>>>>>>>>>>>>>>>>")
+  element.choices.forEach(element => {
+    console.log("...answer choice: " + element);
+  });
+  console.log("index for correct answer: " + element.answerIndex);
+  console.log("factoid: " + element.factoid);
+});
 
-//     for ( i = 0; i < 8; i++) {
-//         var profile = this.typeOfProfile[Math.floor(Math.random() * this.typeOfProfile.length)];
-//         this.typeOfProfile.splice(this.typeOfProfile.indexOf(profile),1);
-//         this.profileType[i] = profile;
-//       }  
-//     },
 
-// };
+// manual process to build questionPool.question array
+// qElement.forEach(element => {
+//   console.log("in loop to call Question()"); 
+//   console.log("qElement is: " + element);
+//   questionPool.questionArray.push(new Question(element));
+  
+// });
+
+// use to unpack & display the question data array content
+// qElement.forEach(element => {
+//   console.log("name: " + element["name"]);
+//   console.log("symbol: " + element["symbol"]);
+//   console.log("hint-question: " + element["elementQuestion"]);
+//   console.log("choices: " + element["choices"]);
+//   console.log("answer index: " + element["answerIndex"]);
+//   console.log("factoid: " + element["factoid"]);
+//   console.log("==============");
+  
+// });
+
+
+
+
+
+
+
+
 
 // ----------------------------------------------------------------------------
 //  START OF GAME FLOW
