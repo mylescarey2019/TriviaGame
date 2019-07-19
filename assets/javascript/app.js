@@ -158,13 +158,13 @@ var availableQuestions = [];
 var questionArray = [];
 var setSize = 5;
 var setsRemaining = 2;
-var questionsRemaining = setSize;
+var questionsRemainingInSet = setSize;
 // timers for question allotment & for transition between questions
 var questionTimer;
 var intermissionTimer;
 // keep these in sync
 var questionTimeConstant = 6;
-var intermissionTimeConstant = 5;
+var intermissionTimeConstant = 4;
 var questionTime = questionTimeConstant;
 var intermissionTime = intermissionTimeConstant;
 var timerStartliteral = "00:06";
@@ -176,10 +176,13 @@ var timeOutAnswers = 0;
 var questionIntervalId;
 var intermissionIntervalId;
 
+// question object that is currently in play
+var currentQuestionInPlay;
+
 // screen texts
 
-var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You can play rounds until all questions are used." + "<br>" 
-                   +  "After playing all questions you will be able to start over." 
+var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You have 20 seconds per question" + 
+                      "<br>" + "Press Start when ready" 
 
 
 // var questionText = "Sorry" + "<br>" + "The correct answer is Li-3." + "<br>" 
@@ -195,57 +198,63 @@ var questionText = "Sorry" + "<br>" + "The correct answer is Ne-10." + "<br>"
 
 // prevents the clock from being sped up unnecessarily
 // may not need this
-var questionIntervalRunning = false;
-var intermissionIntervalRunning = false;
+// deprecated
+// var questionIntervalRunning = false;
+// var intermissionIntervalRunning = false;
 
 // ---------------------------------------------------------
 // Global Functions:
 // ---------------------------------------------------------
-
-sampleChoice = ["O-8","Sn-50","W-74","H-1"];
+// used for testing only
 // see how to seed the answer choices in the button grid
-function updateButtonAnswers () {
-  console.log("in global.updateButtonAnswers");
-  var i = 0;
-  $(".list-group-item-light").each(function() {
-     $(this).text(sampleChoice[i]);
-     i++
-  });
-}
+// sampleChoice = ["O-8","Sn-50","W-74","H-1"];
+// function updateButtonAnswers () {
+//   console.log("in global.updateButtonAnswers");
+//   var i = 0;
+//   $(".list-group-item-light").each(function() {
+//      $(this).text(sampleChoice[i]);
+//      i++
+//   });
+// }
+// updateButtonAnswers();
 
-updateButtonAnswers();
+
+
 
 // start the question countdown timer
 function startQuestionCountdown() {
   console.log("in global.startQuestionCountdown");
-  if (!questionIntervalRunning) {
-    resetQuestionCountdown();
+  // if (!questionIntervalRunning) {
+    // resetQuestionCountdown();
+    questionTime = questionTimeConstant;
+  // update timer on page
+  $("#timer").text(displayableTime(questionTime));
     questionIntervalId = setInterval(questionIntervalCountdown, 1000);
-    questionIntervalRunning = true;
-  }
+  //   questionIntervalRunning = true;
+  // }
 }
 
 // stop the question countdown timer
 function stopQuestionCountdown() {
   console.log("in global.stopQuestionCountdown");
   clearInterval(questionIntervalId);
-  questionIntervalRunning = false;
+  // questionIntervalRunning = false;
 }
 
-// reset question countdown timer
-function resetQuestionCountdown() {
-  console.log("in global.resetQuestionCountdown");
-  // console.log("question timer: " + questionTime);
-  questionTime = questionTimeConstant;
+// deprecated
+// // reset question countdown timer
+// function resetQuestionCountdown() {
+//   console.log("in global.resetQuestionCountdown");
+//   // console.log("question timer: " + questionTime);
+//   questionTime = questionTimeConstant;
 
-  // update timer on page
-  $("#timer").text(displayableTime(questionTime));
-}
+//   // update timer on page
+//   $("#timer").text(displayableTime(questionTime));
+// }
 
 // decrement the question countdown timer
 function questionIntervalCountdown() {
   console.log("in global.questionIntervalCountdown, time: " + questionTime);
-  // decrement time by 1
   questionTime--;
   // update timer on page
   $("#timer").text(displayableTime(questionTime));
@@ -256,20 +265,21 @@ function questionIntervalCountdown() {
   //  time expired
   if (questionTime === 0) {
     stopQuestionCountdown();
-    questionsRemaining--;
+    questionsRemainingInSet--;
     showAnswer();
-    if (questionsRemaining > 0) {
-      startIntermissionCountdown();
-    }
-    else {
-      console.log("in global.questionIntervalCountdown - no more questions");
-      console.log("run game end procedure to show results")
-      console.log("this is where a restart procedure must go");
-      // startIntermissionCountdown();
-      // reset color
-      $("#timer").css("color","#818182");
-      resetGame();
-    }
+    startIntermissionCountdown();  // MRC-fix attempt
+    // if (questionsRemainingInSet > 0) {  // MRC-fix attempt
+    //   // startIntermissionCountdown();  // MRC-fix attempt
+    // }
+    // else {
+    //   console.log("in global.questionIntervalCountdown - no more questions");
+    //   console.log("run game end procedure to show results")
+    //   console.log("this is where a restart procedure must go");
+    //   // startIntermissionCountdown();
+    //   // reset color
+    //   $("#timer").css("color","#818182");
+    //   resetGame();
+    // }
   }
 } 
 
@@ -294,29 +304,36 @@ function displayableTime(t) {
 // start the intermission countdown timer
 function startIntermissionCountdown() {
   console.log("in global.startIntermissionCountdown");
-  if (!intermissionIntervalRunning) {
-    resetIntermissionCountdown();
+  // if (!intermissionIntervalRunning) {
+    // resetIntermissionCountdown();
   // reset color
   $("#timer").css("color","#818182");
+    intermissionTime = intermissionTimeConstant;
     intermissionIntervalId = setInterval(intermissionIntervalCountdown, 1000);
-    intermissionIntervalRunning = true;
-  }
+  //   intermissionIntervalRunning = true;
+  // }
 }
 
 // stop the intermission countdown timer
 function stopIntermissionCountdown() {
   console.log("in global.stopIntermissionCountdown");
   clearInterval(intermissionIntervalId);
-  intermissionIntervalRunning = false;
-  showQuestion();
+  // intermissionIntervalRunning = false;
+  if (questionsRemainingInSet > 0) {  // MRC -fix attempt
+    showQuestion();
+  } else {
+    resetGame();
+  };
+    // don't want to do this if between sets  - fix this
   // startQuestionCountdown();
 }
 
+// deprecated
 // reset intermission countdown timer
-function resetIntermissionCountdown() {
-  console.log("in global.resetIntermissionCountdown");
-  intermissionTime = intermissionTimeConstant;
-}
+// function resetIntermissionCountdown() {
+//   console.log("in global.resetIntermissionCountdown");
+//   intermissionTime = intermissionTimeConstant;
+// }
 
 // decrement the question countdown timer
 function intermissionIntervalCountdown() {
@@ -325,6 +342,7 @@ function intermissionIntervalCountdown() {
   intermissionTime--;
   //  time expired
   if (intermissionTime === 0) {
+    $("#timer").css("color","#818182");  // MRC -fix attempt
     stopIntermissionCountdown() 
   }
 } 
@@ -334,17 +352,51 @@ function intermissionIntervalCountdown() {
 // for now just trying to learn how to create the flow
 function showQuestion() {
   console.log("in global.showQuestion");
-  $("#inner-container-2").html(questionText);
+  // get the next question object
+  currentQuestionInPlay = gameQuestions.getQuestion();
+  console.log("question name: ",currentQuestionInPlay.name);
+  console.log("question symbol: ",currentQuestionInPlay.symbol);
+  console.log("question elementQuestion : ",currentQuestionInPlay.elementQuestion);
+  console.log("question choices : ",currentQuestionInPlay.choices);
+  console.log("question answerIndex: ",currentQuestionInPlay.answerIndex);
+  console.log("question factoid: ",currentQuestionInPlay.factoid);
+ 
+  // load display with question answer choices
+  $("p.lead").text(currentQuestionInPlay.elementQuestion);
+  updateButtonAnswers(currentQuestionInPlay.choices);
+
+  // hide the results panel and show the answer buttons
   $("#inner-container").removeClass("hide-container");
   $("#inner-container-2").addClass("hide-container");
+
     // start the question countdown
     startQuestionCountdown();
 }
 
+// load answer choices to button group
+function updateButtonAnswers (array) {
+  console.log("in global.updateButtonAnswers");
+  var i = 0;
+  $(".list-group-item-light").each(function() {
+     $(this).text(array[i]);
+     i++
+  });
+}
+
+
 // this will belong in the question class or game object
 // for now just trying to learn how to create the flow
 function showAnswer() {
-  console.log("in global.showAnswer, questions remaining: " + questionsRemaining);
+  
+
+  var answerText = "Sorry" + "<br>" + "The correct answer is " +
+          currentQuestionInPlay.symbol  + "<br>" +
+          currentQuestionInPlay.factoid; 
+
+  $("#inner-container-2").html(answerText);        
+
+  // simulate the answer quessing for now
+  console.log("in global.showAnswer, questions remaining: " + questionsRemainingInSet);
   var quess = Math.floor(Math.random() * 2);
   $("#inner-container").addClass("hide-container");
   $("#inner-container-2").removeClass("hide-container");
@@ -367,15 +419,30 @@ function showAnswer() {
   }
 }
 
+// game start up
+function gameStartUp() {
+  console.log("in global.gameStartUp()");
+   // load instructions
+   $("#inner-container-2").html(instructionText);
+  //  $("p.lead").text('HELLO');
+   correctAnswers = 0;
+   incorrectAnswers = 0;
+   timeOutAnswers = 0;
+}
+
+
 function resetGame() {
   console.log("in global.resetGame");
   console.log("1: need to run gameQuestions.resetPool(inlineQuestionData);" );
   console.log("2. need to check to see what global needs to be reset");
 
-  // simulating sets of quizes
+  // load instructions
+  // gameStartUp();  // tMRC - fix attemp
   correctAnswers = 0;
   incorrectAnswers = 0;
   timeOutAnswers = 0;
+
+  // simulating sets of quizes
   setsRemaining--;
   // $("#inner-container").addClass("hide-container");
   // $("#inner-container-2").removeClass("hide-container");
@@ -384,7 +451,7 @@ function resetGame() {
   console.log("3. sets remaining: " + setsRemaining)
   if (setsRemaining > 0) { 
     // do another set
-    questionsRemaining = setSize;
+    questionsRemainingInSet = setSize;
     $("#next-set").removeAttr("disabled");
     // insstructions will have to go to the screen 
   }
@@ -396,6 +463,32 @@ function resetGame() {
   }
 
 }
+
+// diagnostic output to console
+function diagnosticDump() {
+  console.log("------------------------")
+  console.log("in global.diagnosticDump"); 
+  console.log("questions in remaining in pool: ", gameQuestions.availableQuestions.length)
+ 
+  // console.log("display word: " + game.getDisplayableGameWord());
+  // console.log("word: " + game.gameWordString);
+  // console.log("used letters: " + game.getDisplayableUsedLetterList());
+  // console.log("guess remaining: " + game.guessesRemaining);
+  // console.log("game state: " + game.checkGameState());
+  // console.log("words remaining: " + wordPool.availableWords.length);
+  // console.log("wins: " + session.wins);
+  // console.log("losses: " + session.losses);
+  // console.log("game active: " + game.gameActive);
+  // console.log("session active: " + session.sessionActive);
+  // session.wordsWon.forEach(element => {
+  //   console.log("word won: " + element);
+  // });
+  // session.wordsLost.forEach(element => {
+  //   console.log("word lost: " + element);
+  // });
+  console.log("------------------------")
+}
+
 // // this will belong in the question class or game object
 // // for now just trying to learn how to create the flow
 // function loadQuestion() {
@@ -414,7 +507,7 @@ var inlineQuestionData =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion"
                  "factoid": "Modern airships use Helium(He-2) gas due to its non-flammable and 92% buoyancy properties"}, 
                  {"name": "Lithium", "symbol": "Li", "elementQuestion": "Don't leave your phone without it","choices":["K-19","Na-11","Li-3","Pu-94"],"answerIndex":2,
                  "factoid": "Lithium(Li-3) is a main component in cell phone batteries"},
-                 {"name": "Lead", "symbol": "Pb", "elementQuestion": "X-Ray technician make use of this","choices":["F-9","O-8","Cu-29","Pb-82"],"answerIndex":3,
+                 {"name": "Lead", "symbol": "Pb", "elementQuestion": "X-Ray technicians make use of this","choices":["F-9","O-8","Cu-29","Pb-82"],"answerIndex":3,
                  "factoid": "Lead(Pb-82) is used in for shielding when taking X-rays "},
                  {"name": "Copper", "symbol": "Cu", "elementQuestion": "Zinc replaced which of these in the modern US penny?","choices":["Cu-29","Ag-47","Mg-12","Au-79"],"answerIndex":0,
                  "factoid": "Copper(Cu-29) was the main alloy in US pennys until 1982"},
@@ -423,7 +516,7 @@ var inlineQuestionData =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion"
                  "factoid": "Mercury(Hg-80) is the only metal that is liquid at standard temperature and pressure"},
                  {"name": "Oxygen", "symbol": "O", "elementQuestion": "Necessary to form water","choices":["He-2","Au-79","O-8","Ca-20"],"answerIndex":2,
                  "factoid": "Oxygen(O-8) H2O is water: two Hydrongen atoms and 1 Oxygen atom"},
-                 {"name": "Plutonium", "symbol": "Pu", "elementQuestion": "Named after a planet that has since been demoted to minor/dwarf planet","choices":["Pu-92","Kr-36","Xe-54","Ir-77"],"answerIndex":0,
+                 {"name": "Plutonium", "symbol": "Pu", "elementQuestion": "Named after a planet that has since been demoted to minor/dwarf status","choices":["Pu-92","Kr-36","Xe-54","Ir-77"],"answerIndex":0,
                  "factoid": "Plutonium(Pu-94) was named for outer planet Pluto following namings of Uranium and Neptunium"},
                  {"name": "Neon", "symbol": "Ne", "elementQuestion": "Downtown (1964 song by Petula Clark)...Linger on the sidewalks were the **** signs are pretty","choices":["Ti-22","F-9","Ne-10","Zr-40"],"answerIndex":2,
                  "factoid": "Neon(Ne-10) is used to make neon signs "},
@@ -479,6 +572,8 @@ class QuestionPool {
   // array of question objects
   questionArray = [];
 
+
+
   // method to reset the question pool's questions (i.e. questionPool.questionArray )
   resetPool(questionData) {
     console.log("in questionPool.resetPool");
@@ -507,8 +602,15 @@ class QuestionPool {
   getQuestion() {
     console.log("in questionPool.getQuestion");
     // randomly select from availableQuestions
+    var nextQuestionToPlay = this.availableQuestions[Math.floor(Math.random() * this.availableQuestions.length)];
+
     // remove element from availableQuestions - it is going to be consumed
+    this.availableQuestions.splice(this.availableQuestions.indexOf(nextQuestionToPlay),1);
+    
+    diagnosticDump();
+
     // index into the questionArray and return the correleted question object
+    return this.questionArray[nextQuestionToPlay];
   }
 };
 
@@ -550,10 +652,12 @@ class QuestionPool {
 // ----------------------------------------------------------------------------
 //  START OF GAME FLOW
 // ----------------------------------------------------------------------------
+// init activity
+gameStartUp();
 
 // create object to hold all the question objects
 var gameQuestions = new QuestionPool(numberOfQuestions);
-// depracated:
+// deprecated:
 // var gameQuestions = new QuestionPool(numberOfQuestions,availableQuestions,questionArray);
 
 // initialize the pool by loading the question objects to it from the global question
@@ -602,7 +706,7 @@ $("#start-restart").on("click", function() {
   $("#inner-container").addClass("hide-container");
   $("#inner-container-2").removeClass("hide-container");
   setsRemaining = 2;
-  questionsRemaining = setSize;
+  questionsRemainingInSet = setSize;
   
   // get and reveil next qustion
   showQuestion();
@@ -648,12 +752,13 @@ $(".list-group-item-light").on("click", function(e) {
   // stop the question timer
   stopQuestionCountdown();
   // decrement questions remaining
-  questionsRemaining--;
+  questionsRemainingInSet--;
   // show the answer
   showAnswer();
+  startIntermissionCountdown();  // MRC-fix attempt
   // start the intermission timer for transitioning between questions
-  if(questionsRemaining > 0) {
-    startIntermissionCountdown();
+  if(questionsRemainingInSet > 0) {
+    // startIntermissionCountdown();  // MRC-fix attempt
   }
   else {
     console.log("in global.questionIntervalCountdown - no more questions");
@@ -732,7 +837,7 @@ $(".list-group-item-light").on("click", function(e) {
 //     // } 
 //     case "restart": {
 //       game.resetGame();
-//       // depracated:
+//       // deprecated:
 //       // game.startGame();
 //       break;
 //     } 

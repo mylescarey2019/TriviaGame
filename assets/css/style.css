@@ -45,13 +45,17 @@ body {
 
 }
 
-#para2 {
+#info-line {  
+  font-weight: 400;
+}
+
+/* #para2 {
   margin-top: 40px;
   padding: 10px;
   background-color: rgba(190,183,171,.85);
   margin-left: 5%;
   margin-right: 5%;
-}
+} */
 
 nav {
   background-color: #7e7058;
@@ -110,7 +114,7 @@ float: right; */
 #inner-container-2 {
   /* display: none; */
   height: 164px;
-  padding: 10px;
+  padding: 40px 10px 10px 10px;
   font-size: 18px;
   text-align: center;
   color: #818182;
@@ -119,10 +123,22 @@ float: right; */
   margin-bottom: 0px;
 }
 
+
+
 .progress {
   margin-top: 10px;
 }  
 
+#key {
+  /* display: none; */
+  padding: 5px;
+  font-size: 10px;
+  text-align: center;
+  color: #818182;
+  border-radius: .25rem;
+  background-color: #fdfdfe;
+  margin-top: 10px;
+}
 /* media query section */
 
 
@@ -133,7 +149,13 @@ float: right; */
     body {
       padding-top: 96px;
     }
+
+    #inner-container-2 {
+      font-size: 14px;
+    }
   }
+
+
   /* border-radius: .25rem;  does't seem to woring
   background-color: #fdfdfe;
 }
