@@ -157,20 +157,24 @@ var numberOfQuestions = 10;
 var availableQuestions = [];
 var questionArray = [];
 var setSize = 5;
-var setsRemaining = 2;
+var progressBarPercentPerQuestion = 100 / setSize;
+var setsRemaining = numberOfQuestions / setSize;
 var questionsRemainingInSet = setSize;
 // timers for question allotment & for transition between questions
 var questionTimer;
 var intermissionTimer;
 // keep these in sync
-var questionTimeConstant = 6;
-var intermissionTimeConstant = 4;
+var questionTimeConstant = 7;
+var intermissionTimeConstant = 3;
 var questionTime = questionTimeConstant;
 var intermissionTime = intermissionTimeConstant;
-var timerStartliteral = "00:06";
-var correctAnswers = 0;
-var incorrectAnswers = 0;
-var timeOutAnswers = 0;
+var correctAnswersSet = 0;
+var incorrectAnswersSet = 0;
+var timeOutAnswersSet = 0;
+var correctAnswersOverall = 0;
+var incorrectAnswersOverall = 0;
+var timeOutAnswersOverall = 0;
+
 
 // interval for timers
 var questionIntervalId;
@@ -266,7 +270,10 @@ function questionIntervalCountdown() {
   if (questionTime === 0) {
     stopQuestionCountdown();
     questionsRemainingInSet--;
-    showAnswer();
+    // passing (result,timeExpired)
+    // in this case answer is counted as wrong, i.e. false
+    // and timeExpired is true
+    showAnswer(false,true);
     startIntermissionCountdown();  // MRC-fix attempt
     // if (questionsRemainingInSet > 0) {  // MRC-fix attempt
     //   // startIntermissionCountdown();  // MRC-fix attempt
@@ -383,40 +390,104 @@ function updateButtonAnswers (array) {
   });
 }
 
+// create string for Set score
+function yourSetScore() {
+  console.log("in global.setScore");
+  var msg = "Your quiz score was: " + correctAnswersSet +
+            " Correct, " + incorrectAnswersSet +
+            " Incorrect, " + timeOutAnswersSet +
+            " Time expired." 
+  return msg;
+}
+
+// create string for Overall score
+function yourOverallScore() {
+  console.log("in global.overallScore");
+  var msg = "Your total score was: " + correctAnswersOverall +
+            " Correct, " + incorrectAnswersOverall +
+            " Incorrect, " + timeOutAnswersOverall +
+            " Time expired.";
+  return msg;
+}
 
 // this will belong in the question class or game object
 // for now just trying to learn how to create the flow
-function showAnswer() {
-  
-
-  var answerText = "Sorry" + "<br>" + "The correct answer is " +
-          currentQuestionInPlay.symbol  + "<br>" +
-          currentQuestionInPlay.factoid; 
-
-  $("#inner-container-2").html(answerText);        
-
-  // simulate the answer quessing for now
-  console.log("in global.showAnswer, questions remaining: " + questionsRemainingInSet);
-  var quess = Math.floor(Math.random() * 2);
-  $("#inner-container").addClass("hide-container");
-  $("#inner-container-2").removeClass("hide-container");
-  if (quess === 0 ) {
-    incorrectAnswers++;
-    var progBarIncorrect = 20 * incorrectAnswers;
+function showAnswer(result,timeExpired) {
+  console.log("in global.showAnswer");
+  console.log("result/time-expired sent in is: ", result, timeExpired);
+  var resultMsg;
+  if (timeExpired) {
+    resultMsg = "Time expired." + "<br>" + "The answer is " +
+    currentQuestionInPlay.symbol  + "<br>" +
+    currentQuestionInPlay.factoid; 
+    timeOutAnswersSet++;
+    // time-out counts as incorrect on progress bar
+    var progBarIncorrect = progressBarPercentPerQuestion * (timeOutAnswersSet + incorrectAnswersSet);
+    console.log("prog bar incorrect # : ", progressBarPercentPerQuestion, incorrectAnswersSet, progBarIncorrect);
     var progBarStyle = "width: " + progBarIncorrect + "%";
     var progBarLabel = progBarIncorrect.toString() + "%";
     $(".bg-danger").attr("style",progBarStyle);
     $(".bg-danger").text(progBarLabel);
   }
-  else 
-  {
-    correctAnswers++;
-    var progBarCorrect = 20 * correctAnswers;
+  else if (result) {
+    resultMsg = "You are correct" + "<br>" + "The answer is " +
+    currentQuestionInPlay.symbol  + "<br>" +
+    currentQuestionInPlay.factoid; 
+    correctAnswersSet++;
+    var progBarCorrect = progressBarPercentPerQuestion * correctAnswersSet;
+    console.log("prog bar correct # : ", progressBarPercentPerQuestion, correctAnswersSet, progBarCorrect);
     var progBarStyle = "width: " + progBarCorrect + "%";
     var progBarLabel = progBarCorrect.toString() + "%";
     $(".bg-success").attr("style",progBarStyle);
     $(".bg-success").text(progBarLabel);
   }
+    else {
+      resultMsg = "Sorry" + "<br>" + "The correct answer is " +
+      currentQuestionInPlay.symbol  + "<br>" +
+      currentQuestionInPlay.factoid; 
+      incorrectAnswersSet++;
+      // wrong answer- update progress bar
+      var progBarIncorrect = progressBarPercentPerQuestion * (timeOutAnswersSet +  incorrectAnswersSet);
+      console.log("prog bar incorrect # : ", progressBarPercentPerQuestion, incorrectAnswersSet, progBarIncorrect);
+      var progBarStyle = "width: " + progBarIncorrect + "%";
+      var progBarLabel = progBarIncorrect.toString() + "%";
+      $(".bg-danger").attr("style",progBarStyle);
+      $(".bg-danger").text(progBarLabel);
+    }; 
+   
+    console.log("result string is: ", resultMsg); 
+
+    // display the result message
+    $("#inner-container-2").html(resultMsg);   
+
+    // this will hide the button group and show the answer paragraph
+    $("#inner-container").addClass("hide-container");
+    $("#inner-container-2").removeClass("hide-container"); 
+
+      
+
+  // // simulate the answer quessing for now
+  // console.log("in global.showAnswer, questions remaining: " + questionsRemainingInSet);
+  // var quess = Math.floor(Math.random() * 2);
+  // $("#inner-container").addClass("hide-container");
+  // $("#inner-container-2").removeClass("hide-container");
+  // if (quess === 0 ) {
+  //   incorrectAnswers++;
+  //   var progBarIncorrect = 20 * incorrectAnswers;
+  //   var progBarStyle = "width: " + progBarIncorrect + "%";
+  //   var progBarLabel = progBarIncorrect.toString() + "%";
+  //   $(".bg-danger").attr("style",progBarStyle);
+  //   $(".bg-danger").text(progBarLabel);
+  // }
+  // else 
+  // {
+  //   correctAnswers++;
+  //   var progBarCorrect = 20 * correctAnswers;
+  //   var progBarStyle = "width: " + progBarCorrect + "%";
+  //   var progBarLabel = progBarCorrect.toString() + "%";
+  //   $(".bg-success").attr("style",progBarStyle);
+  //   $(".bg-success").text(progBarLabel);
+  // }
 }
 
 // game start up
@@ -425,9 +496,11 @@ function gameStartUp() {
    // load instructions
    $("#inner-container-2").html(instructionText);
   //  $("p.lead").text('HELLO');
-   correctAnswers = 0;
-   incorrectAnswers = 0;
-   timeOutAnswers = 0;
+   correctAnswersSet = 0;
+   incorrectAnswersSet = 0;
+   timeOutAnswersSet = 0;
+   setsRemaining = 2;
+   questionsRemainingInSet = setSize;
 }
 
 
@@ -436,11 +509,7 @@ function resetGame() {
   console.log("1: need to run gameQuestions.resetPool(inlineQuestionData);" );
   console.log("2. need to check to see what global needs to be reset");
 
-  // load instructions
-  // gameStartUp();  // tMRC - fix attemp
-  correctAnswers = 0;
-  incorrectAnswers = 0;
-  timeOutAnswers = 0;
+
 
   // simulating sets of quizes
   setsRemaining--;
@@ -449,18 +518,41 @@ function resetGame() {
   // $(".bg-danger").attr("style","width: 0%");
   // $(".bg-success").attr("style","width: 0%");
   console.log("3. sets remaining: " + setsRemaining)
+  $("p.lead").html("<br>");
+  // track overall score
+  correctAnswersOverall += correctAnswersSet;
+  incorrectAnswersOverall += incorrectAnswersSet;
+  timeOutAnswersOverall += timeOutAnswersSet;
+
   if (setsRemaining > 0) { 
     // do another set
     questionsRemainingInSet = setSize;
     $("#next-set").removeAttr("disabled");
-    // insstructions will have to go to the screen 
+    // yourSetScore goes here 
+    var bothMsg = yourSetScore() + "<br>" +
+    yourOverallScore() + "<br>" +
+    "Press Next Quiz when ready";
+    $("#inner-container-2").html(bothMsg); 
   }
   else {
     console.log("all questions/sets used - restart")
     $("#start-restart").removeAttr("disabled");
-    // instructions will have to go the screen
+    // yourSetScore & yourOverallScore goes here
+    var bothMsg = yourSetScore() + "<br>" + yourOverallScore() +
+             "<br>" + "Press Restart to play again";
+    $("#inner-container-2").html(bothMsg);  
+    // reset overall scores
+    correctAnswersOverall = 0;
+    incorrectAnswersOverall = 0;
+    timeOutAnswersOverall = 0;
+  };
 
-  }
+    // load instructions
+  // gameStartUp();  // tMRC - fix attemp
+  
+  correctAnswersSet = 0;
+  incorrectAnswersSet = 0;
+  timeOutAnswersSet = 0;
 
 }
 
@@ -664,10 +756,12 @@ var gameQuestions = new QuestionPool(numberOfQuestions);
 // data array - i.e 
 gameQuestions.resetPool(inlineQuestionData);
 
+// unpackQuestions();
+
 // going to need a game object and a run function i think
 // game.run();
 
-
+function unpackQuestions() {
 // unpack and log the gameQuestions to see if it was loaded as intended
 // these are properties of the questionPool class object
 console.log("---------------------------------------");
@@ -691,6 +785,9 @@ gameQuestions.questionArray.forEach(element => {
   console.log("index for correct answer: " + element.answerIndex);
   console.log("factoid: " + element.factoid);
 });
+}
+
+
 
 
 
@@ -705,10 +802,13 @@ $("#start-restart").on("click", function() {
   $(".bg-success").attr("style","width: 0%");
   $("#inner-container").addClass("hide-container");
   $("#inner-container-2").removeClass("hide-container");
-  setsRemaining = 2;
-  questionsRemainingInSet = setSize;
+  gameStartUp();
+  gameQuestions.resetPool(inlineQuestionData);
+  // setsRemaining = 2;
+  // questionsRemainingInSet = setSize;
   
   // get and reveil next qustion
+  // not sure we should showQuestion here anymore - MRC fix
   showQuestion();
   // start the question countdown
   // startQuestionCountdown();
@@ -753,96 +853,18 @@ $(".list-group-item-light").on("click", function(e) {
   stopQuestionCountdown();
   // decrement questions remaining
   questionsRemainingInSet--;
-  // show the answer
-  showAnswer();
+  // show the answer - 2nd parameter is if timeOut occured, which it did not
+  showAnswer(currentQuestionInPlay.isCorrect(+$(this).val()),false);
   startIntermissionCountdown();  // MRC-fix attempt
-  // start the intermission timer for transitioning between questions
-  if(questionsRemainingInSet > 0) {
-    // startIntermissionCountdown();  // MRC-fix attempt
-  }
-  else {
-    console.log("in global.questionIntervalCountdown - no more questions");
-    console.log("run game end procedure to show results")
-    console.log("this is where a restart procedure must go");
-    resetGame();
-  }
+  // // start the intermission timer for transitioning between questions
+  // if(questionsRemainingInSet > 0) {
+  //   // startIntermissionCountdown();  // MRC-fix attempt
+  // }
+  // else {
+  //   console.log("in global.questionIntervalCountdown - no more questions");
+  //   console.log("run game end procedure to show results")
+  //   console.log("this is where a restart procedure must go");
+  //   resetGame();
+  // }
 });
-
-// intermission is over
-
-
-// // click event for candidate badges
-// $(".candidate").on("click", function() {
-//   console.log("in on.click .candidate")
-//   // get Id attr of the badge
-//   var badgeId = $(this).attr("id");
-//   // console.log("The attr id of the badge is " + badgeId);
-
-//   if (candidate.candidateIsMovable[candidate.candidateName.indexOf(badgeId)]) {
-//     switch (game.currentGameState) {
-//       case "pick-candidate": {
-//         $("#contenders-top").css("visibility","visible");
-//         $("#contenders").css("visibility","visible");
-//         userInterface.moveCandidateToFrontRunnerBox(badgeId);
-//         userInterface.moveCandidatesToContendersBox();
-//         game.currentGameState = 'pick-opponent';
-//         // userInterface.diagnosticDump();
-//         break;
-//       }
-//       case "pick-opponent": {
-//         userInterface.moveContenderToChallengerBox(badgeId);
-//         game.currentGameState = 'campaign';
-//         // userInterface.diagnosticDump();
-//         break;
-//       }      
-//       default:
-//         break;
-//     };
-//   };
-// });
-
-// // click event for action button
-// $("#duel").on("click", function() {
-//   console.log("in on.click .duel");
-//   // userInterface.diagnosticDump();
-//   switch (game.currentGameState) {
-//     case "campaign": {
-//       game.executeTurn();
-//       break;
-//     }
-//     case "campaign-won": {
-//       game.preElection();
-//       game.currentGameState = 'pre-election-night';
-//       break;
-//     }       
-//     case "pre-election-night": {
-//       game.startElection();
-//       game.currentGameState = 'campaign' //'election-night';
-//       break;
-//     } 
-//     // need to change this so it flows thru executeTurn
-//     // will need a boolean so we know it is the election
-//     // round and will need to refresh the nominee to they
-//     // they can win or lose - probably take existing health * 3
-//     // and reset their attack rating
-//     // will also have to populate Trumps stats and 
-//     // push it into a ninth position on the candidate arrays
-//     // so that existing logic for managing the battle round 
-//     // can be used almost as-is
-//     // 
-//     // case "election-night": {
-//     //   // game.executeElectionTurn();
-//     //   game.currentGameState = 'campaign';
-//     //   break;
-//     // } 
-//     case "restart": {
-//       game.resetGame();
-//       // deprecated:
-//       // game.startGame();
-//       break;
-//     } 
-//     default:
-//       break;
-//   };
-// });
 
