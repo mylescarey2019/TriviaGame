@@ -156,22 +156,33 @@
 var numberOfQuestions = 10;
 var availableQuestions = [];
 var questionArray = [];
-var questionsRemaining = 3;
+var setSize = 5;
+var setsRemaining = 2;
+var questionsRemaining = setSize;
 // timers for question allotment & for transition between questions
 var questionTimer;
 var intermissionTimer;
 // keep these in sync
-var questionTimeConstant = 7;
-var intermissionTimeConstant = 4;
+var questionTimeConstant = 6;
+var intermissionTimeConstant = 3;
 var questionTime = questionTimeConstant;
 var intermissionTime = intermissionTimeConstant;
-var timerStartliteral = "00:05";
+var timerStartliteral = "00:06";
+var correctAnswers = 0;
+var incorrectAnswers = 0;
+var timeOutAnswers = 0;
 
 // interval for timers
 var questionIntervalId;
 var intermissionIntervalId;
 
+// screen texts
 
+var instructionText = "There are 5 questions per quiz/trivia round." + "\n" + "You can play rounds until all questions are used." + "\n" 
+                   +  "After playing all questions you will be able to start over." 
+
+var questionText = "Sorry" + "\n" + "The correct answer is Li-3." + "\n" 
+                   +  "Lithium(Li-3) is a main component in cell phone batteries" 
 
 // prevents the clock from being sped up unnecessarily
 // may not need this
@@ -204,6 +215,7 @@ function resetQuestionCountdown() {
   console.log("in global.resetQuestionCountdown");
   // console.log("question timer: " + questionTime);
   questionTime = questionTimeConstant;
+
   // update timer on page
   $("#timer").text(displayableTime(questionTime));
 }
@@ -215,6 +227,10 @@ function questionIntervalCountdown() {
   questionTime--;
   // update timer on page
   $("#timer").text(displayableTime(questionTime));
+  //  time running out
+  if (questionTime <= 5) {
+    $("#timer").css("color","red");
+  };
   //  time expired
   if (questionTime === 0) {
     stopQuestionCountdown();
@@ -227,6 +243,9 @@ function questionIntervalCountdown() {
       console.log("in global.questionIntervalCountdown - no more questions");
       console.log("run game end procedure to show results")
       console.log("this is where a restart procedure must go");
+      // startIntermissionCountdown();
+      // reset color
+      $("#timer").css("color","#818182");
       resetGame();
     }
   }
@@ -255,6 +274,8 @@ function startIntermissionCountdown() {
   console.log("in global.startIntermissionCountdown");
   if (!intermissionIntervalRunning) {
     resetIntermissionCountdown();
+  // reset color
+  $("#timer").css("color","#818182");
     intermissionIntervalId = setInterval(intermissionIntervalCountdown, 1000);
     intermissionIntervalRunning = true;
   }
@@ -266,7 +287,7 @@ function stopIntermissionCountdown() {
   clearInterval(intermissionIntervalId);
   intermissionIntervalRunning = false;
   showQuestion();
-  startQuestionCountdown();
+  // startQuestionCountdown();
 }
 
 // reset intermission countdown timer
@@ -291,18 +312,67 @@ function intermissionIntervalCountdown() {
 // for now just trying to learn how to create the flow
 function showQuestion() {
   console.log("in global.showQuestion");
+  $("#inner-container-2").html(questionText);
+  $("#inner-container").removeClass("hide-container");
+  $("#inner-container-2").addClass("hide-container");
+    // start the question countdown
+    startQuestionCountdown();
 }
 
 // this will belong in the question class or game object
 // for now just trying to learn how to create the flow
 function showAnswer() {
   console.log("in global.showAnswer, questions remaining: " + questionsRemaining);
+  var quess = Math.floor(Math.random() * 2);
+  $("#inner-container").addClass("hide-container");
+  $("#inner-container-2").removeClass("hide-container");
+  if (quess === 0 ) {
+    incorrectAnswers++;
+    var progBarIncorrect = 20 * incorrectAnswers;
+    var progBarStyle = "width: " + progBarIncorrect + "%";
+    var progBarLabel = progBarIncorrect.toString() + "%";
+    $(".bg-danger").attr("style",progBarStyle);
+    $(".bg-danger").text(progBarLabel);
+  }
+  else 
+  {
+    correctAnswers++;
+    var progBarCorrect = 20 * correctAnswers;
+    var progBarStyle = "width: " + progBarCorrect + "%";
+    var progBarLabel = progBarCorrect.toString() + "%";
+    $(".bg-success").attr("style",progBarStyle);
+    $(".bg-success").text(progBarLabel);
+  }
 }
 
 function resetGame() {
   console.log("in global.resetGame");
   console.log("1: need to run gameQuestions.resetPool(inlineQuestionData);" );
   console.log("2. need to check to see what global needs to be reset");
+
+  // simulating sets of quizes
+  correctAnswers = 0;
+  incorrectAnswers = 0;
+  timeOutAnswers = 0;
+  setsRemaining--;
+  // $("#inner-container").addClass("hide-container");
+  // $("#inner-container-2").removeClass("hide-container");
+  // $(".bg-danger").attr("style","width: 0%");
+  // $(".bg-success").attr("style","width: 0%");
+  console.log("3. sets remaining: " + setsRemaining)
+  if (setsRemaining > 0) { 
+    // do another set
+    questionsRemaining = setSize;
+    $("#next-set").removeAttr("disabled");
+    // insstructions will have to go to the screen 
+  }
+  else {
+    console.log("all questions/sets used - restart")
+    $("#start-restart").removeAttr("disabled");
+    // instructions will have to go the screen
+
+  }
+
 }
 // // this will belong in the question class or game object
 // // for now just trying to learn how to create the flow
@@ -501,15 +571,45 @@ gameQuestions.questionArray.forEach(element => {
 //  prototyping - clicking the start button
 //  will start the game - in this case lets just start
 //  the answer countdown timer
-$("#start-game").on("click", function() {
-  console.log("in start-game.on.click");
+$("#start-restart").on("click", function() {
+  console.log("in start-restart.on.click");
+  $(this).prop("disabled",true);
+
+  $(".bg-danger").attr("style","width: 0%");
+  $(".bg-success").attr("style","width: 0%");
+  $("#inner-container").addClass("hide-container");
+  $("#inner-container-2").removeClass("hide-container");
+  setsRemaining = 2;
+  questionsRemaining = setSize;
+  
   // get and reveil next qustion
   showQuestion();
   // start the question countdown
-  startQuestionCountdown();
+  // startQuestionCountdown();
   // also will want to disable the start button during quiz 
   // do that here
 });
+
+
+
+//  prototyping - clicking the start button
+//  will start the game - in this case lets just start
+//  the answer countdown timer
+$("#next-set").on("click", function() {
+  console.log("in next-set.on.click");
+  $(this).prop("disabled",true);
+  $(".bg-danger").attr("style","width: 0%");
+  $(".bg-success").attr("style","width: 0%");
+  $("#inner-container").addClass("hide-container");
+  $("#inner-container-2").removeClass("hide-container");
+  // get and reveil next qustion
+  showQuestion();
+  // start the question countdown
+  // startQuestionCountdown();
+  // also will want to disable the start button during quiz 
+  // do that here
+});
+
 
 //  cancel the question timer
 //  start the intermission timer

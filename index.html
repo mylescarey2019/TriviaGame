@@ -21,17 +21,17 @@
   <body>
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
       <!-- Local -->
       <!--Latest JQuery download -->
-      <script src="assets/javascript/jquery-3.4.1.js"></script>
+      <!-- <script src="assets/javascript/jquery-3.4.1.js"></script> -->
       <!-- Popper -->
-      <script src="assets/javascript/popper.min.js"></script>
+      <!-- <script src="assets/javascript/popper.min.js"></script> -->
       <!-- Latest compiled and minified JavaScript -->
-      <script src="assets/javascript/bootstrap.min.js"></script>
+      <!-- <script src="assets/javascript/bootstrap.min.js"></script> -->
 
       <!-- <nav class="navbar navbar-expand-sm justify-content-between navbar-dark bg-dark"> -->
       <nav class="navbar fixed-top navbar-expand-sm navbar-dark  bg-#7e7058">
@@ -39,10 +39,10 @@
         <a class="navbar-brand" href="#">Periodic Table Quiz</a>
           <div id="header">
             <div>
-                <button type="button" class="btn btn-light" disabled>Next Quiz</button>
+                <button id="next-set" type="button" class="btn btn-light" disabled>Next Quiz</button>
             </div>
             <div>
-                <button id="start-game" type="button" class="btn btn-light">Start/Restart</button>
+                <button id="start-restart" type="button" class="btn btn-light">Start/Restart</button>
             </div>
           </div>
         </div>
@@ -58,18 +58,31 @@
                         <span>00:07</span>
                     </h3>
                     <br>
-                    <div class="list-flush">
-                        <!-- <button type="button" class="list-group-item list-group-item-action active">
-                          Cras justo odio
-                        </button> -->
-                        <button type="button" class="list-group-item-light list-group-item-action">K-19</button>
-                        <button type="button" class="list-group-item-light list-group-item-action">Na-11</button>
-                        <button type="button" class="list-group-item-light list-group-item-action">Li-3</button>
-                        <button type="button" class="list-group-item-light list-group-item-action">Pu-94</button>
+                    <div id="inner-container" class="hide-container">
+                      <div class="list-flush">
+                          <!-- <button type="button" class="list-group-item list-group-item-action active">
+                            Cras justo odio
+                          </button> -->
+                          <button type="button" class="list-group-item-light list-group-item-action">K-19</button>
+                          <button type="button" class="list-group-item-light list-group-item-action">Na-11</button>
+                          <button type="button" class="list-group-item-light list-group-item-action">Li-3</button>
+                          <button type="button" class="list-group-item-light list-group-item-action">Pu-94</button>
+                      </div>
+                    </div>
+                    <div>
+                      <!-- <p id="inner-container-2"> Sorry  <br> The correct answer is Li-3. <br>
+                          Lithium(Li-3) is a main component in cell phone batteries 
+                      </p> -->
+                      <p id="inner-container-2">There are 5 questions per quiz/trivia. <br> You can play multiple rounds
+                          <br> until all questions have been used.
+                      </p>
                     </div>
                     <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">20%</div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+                        <!-- <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div> -->
                     </div>
                 </div>
             </div>
