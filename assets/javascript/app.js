@@ -164,7 +164,7 @@ var questionTimer;
 var intermissionTimer;
 // keep these in sync
 var questionTimeConstant = 6;
-var intermissionTimeConstant = 3;
+var intermissionTimeConstant = 5;
 var questionTime = questionTimeConstant;
 var intermissionTime = intermissionTimeConstant;
 var timerStartliteral = "00:06";
@@ -178,11 +178,20 @@ var intermissionIntervalId;
 
 // screen texts
 
-var instructionText = "There are 5 questions per quiz/trivia round." + "\n" + "You can play rounds until all questions are used." + "\n" 
+var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You can play rounds until all questions are used." + "<br>" 
                    +  "After playing all questions you will be able to start over." 
 
-var questionText = "Sorry" + "\n" + "The correct answer is Li-3." + "\n" 
-                   +  "Lithium(Li-3) is a main component in cell phone batteries" 
+
+// var questionText = "Sorry" + "<br>" + "The correct answer is Li-3." + "<br>" 
+// +  "Lithium(Li-3) is a main component in cell phone batteries" 
+
+// var questionText = "Sorry" + "\n" + "The correct answer is Li-3." + "\n" 
+//                    +  "Lithium(Li-3) is a main component in cell phone batteries" 
+
+var questionText = "Sorry" + "<br>" + "The correct answer is Ne-10." + "<br>" 
++  "Neon(Ne-10) is used to make neon signs"; 
+
+                  
 
 // prevents the clock from being sped up unnecessarily
 // may not need this
@@ -192,6 +201,19 @@ var intermissionIntervalRunning = false;
 // ---------------------------------------------------------
 // Global Functions:
 // ---------------------------------------------------------
+
+sampleChoice = ["O-8","Sn-50","W-74","H-1"];
+// see how to seed the answer choices in the button grid
+function updateButtonAnswers () {
+  console.log("in global.updateButtonAnswers");
+  var i = 0;
+  $(".list-group-item-light").each(function() {
+     $(this).text(sampleChoice[i]);
+     i++
+  });
+}
+
+updateButtonAnswers();
 
 // start the question countdown timer
 function startQuestionCountdown() {
@@ -613,8 +635,16 @@ $("#next-set").on("click", function() {
 
 //  cancel the question timer
 //  start the intermission timer
-$(".list-group-item-light").on("click", function() {
+$(".list-group-item-light").on("click", function(e) {
   console.log("in list-group-item-light.on.click");
+  console.log("CLICK: " + e.type);
+  console.log("CLICK: " + e.which);
+  console.log("CLICK: " + e.target);
+  var button = $(event.target).closest('button');
+  console.log("You clicked on: ", button);
+  console.log("that was: ", button.innerText);
+  console.log("value is:  ", $(this).val());
+ 
   // stop the question timer
   stopQuestionCountdown();
   // decrement questions remaining
