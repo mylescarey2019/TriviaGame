@@ -1,15 +1,13 @@
-// saved state of of 7-17-19 9:55pm
-
 // --------------------------------------------------------
 // javascript Periodic Table of Elements Quiz game
 // ---------------------------------------------------------
 // Summary:
 // This is a knowledge quiz game more than a trivia game.
 // The theme is the Periodic Table of Elements.  The player
-// answers a series of 10 question given 15 seconds per question.
+// answers a series of 5 question given 25 seconds per question.
 // After completing the set stats are shown for counts of correct, incorrect
 // and time-expired answers.
-// Player has opportunity to play the next set of 10 questions.
+// Player has opportunity to play the next set of 5 questions.
 // After all sets exhausted player can start over from the beginning.
 // ---------------------------------------------------------
 
@@ -19,18 +17,17 @@
 // Logic layer:  javascript object/methods, button click events
 //   game "state" variable to control the "story board" flow.
 //   JQuery for DOM manipulation.
-//   *** attempting to utlize classes for the Question object
-//   and instansiate one object per question.
-// 
+//   Used classes for questions and pool of questions.
+//    
 // Web-Page:  nesponsive layout leveraging bootstrap.
 //    JQuery for dynamic activty of onpage objects and styles.
 // 
 // The "state" logic guides the experience and page activity
-// as the player progress thru the decision tree/story board
-// and the program responds to the play results.
+// as the player progresses thru each quiz 
 // 
 // State flow allows for game reset after completion
-
+// Start/Restart and Next Quiz buttons are disable/enabled
+// relative to the game state
 
 // ---------------------------------------------------------
 // Refactor Needs:
@@ -167,7 +164,7 @@ $(document).ready(function(){
   var intermissionTimer;
   // keep these in sync
   var questionTimeConstant = 25;
-  var intermissionTimeConstant = 7;
+  var intermissionTimeConstant = 6;
   var questionTime = questionTimeConstant;
   var intermissionTime = intermissionTimeConstant;
   var correctAnswersSet = 0;
@@ -187,8 +184,9 @@ $(document).ready(function(){
   
   // screen texts
   
-  var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You have 25 seconds per question" + 
-                        "<br>" + "Press Start when ready.  You can Restart after you have finished all rounds." 
+  var instructionText = "There are " + setSize + " questions per quiz and there are " + numberOfSetsConstant +
+                         " quizzes." + "<br>" + "You have 25 seconds per question" + 
+                        "<br>" + "Press Start when ready.  You can Restart after you have finished all quizzes in total." 
   
   
   // var questionText = "Sorry" + "<br>" + "The correct answer is Li-3." + "<br>" 
@@ -824,7 +822,7 @@ $(document).ready(function(){
     event.preventDefault();
     console.log("in start-restart.on.click");
     $(this).prop("disabled",true);
-  
+
     $(".bg-danger").attr("style","width: 0%");
     $(".bg-success").attr("style","width: 0%");
     $("#inner-container").addClass("hide-container");
