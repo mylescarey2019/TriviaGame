@@ -41,8 +41,10 @@ body {
   font-weight: bolder;
   margin-left: 5%;
   margin-right: 5%;
+}
 
-
+.lead {
+  font-size: 1.4 rem;
 }
 
 #info-line {  

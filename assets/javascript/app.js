@@ -153,19 +153,20 @@
 // ---------------------------------------------------------
 // initial some variables to be used in questionPool
 // maybe this goes in a game object but not sure
-var numberOfQuestions = 10;
+var numberOfQuestions = 15;
 var availableQuestions = [];
 var questionArray = [];
 var setSize = 5;
 var progressBarPercentPerQuestion = 100 / setSize;
 var setsRemaining = numberOfQuestions / setSize;
+var numberOfSetsConstant = numberOfQuestions / setSize;
 var questionsRemainingInSet = setSize;
 // timers for question allotment & for transition between questions
 var questionTimer;
 var intermissionTimer;
 // keep these in sync
-var questionTimeConstant = 7;
-var intermissionTimeConstant = 3;
+var questionTimeConstant = 25;
+var intermissionTimeConstant = 7;
 var questionTime = questionTimeConstant;
 var intermissionTime = intermissionTimeConstant;
 var correctAnswersSet = 0;
@@ -185,7 +186,7 @@ var currentQuestionInPlay;
 
 // screen texts
 
-var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You have 20 seconds per question" + 
+var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You have 25 seconds per question" + 
                       "<br>" + "Press Start when ready" 
 
 
@@ -499,7 +500,7 @@ function gameStartUp() {
    correctAnswersSet = 0;
    incorrectAnswersSet = 0;
    timeOutAnswersSet = 0;
-   setsRemaining = 2;
+   setsRemaining = numberOfSetsConstant;
    questionsRemainingInSet = setSize;
 }
 
@@ -530,7 +531,6 @@ function resetGame() {
     $("#next-set").removeAttr("disabled");
     // yourSetScore goes here 
     var bothMsg = yourSetScore() + "<br>" +
-    yourOverallScore() + "<br>" +
     "Press Next Quiz when ready";
     $("#inner-container-2").html(bothMsg); 
   }
@@ -604,18 +604,32 @@ var inlineQuestionData =  [{"name": "Hydrogen", "symbol": "H", "elementQuestion"
                  {"name": "Copper", "symbol": "Cu", "elementQuestion": "Zinc replaced which of these in the modern US penny?","choices":["Cu-29","Ag-47","Mg-12","Au-79"],"answerIndex":0,
                  "factoid": "Copper(Cu-29) was the main alloy in US pennys until 1982"},
 
+
                  {"name": "Mercury", "symbol": "Hg", "elementQuestion": "A metal you can pour","choices":["Ni-28","Hg-80","Xe-54","Ne-10"],"answerIndex":1,
                  "factoid": "Mercury(Hg-80) is the only metal that is liquid at standard temperature and pressure"},
                  {"name": "Oxygen", "symbol": "O", "elementQuestion": "Necessary to form water","choices":["He-2","Au-79","O-8","Ca-20"],"answerIndex":2,
                  "factoid": "Oxygen(O-8) H2O is water: two Hydrongen atoms and 1 Oxygen atom"},
-                 {"name": "Plutonium", "symbol": "Pu", "elementQuestion": "Named after a planet that has since been demoted to minor/dwarf status","choices":["Pu-92","Kr-36","Xe-54","Ir-77"],"answerIndex":0,
+                 {"name": "Plutonium", "symbol": "Pu", "elementQuestion": "Named after planet that has since been demoted to dwarf status","choices":["Pu-92","Kr-36","Xe-54","Ir-77"],"answerIndex":0,
                  "factoid": "Plutonium(Pu-94) was named for outer planet Pluto following namings of Uranium and Neptunium"},
-                 {"name": "Neon", "symbol": "Ne", "elementQuestion": "Downtown (1964 song by Petula Clark)...Linger on the sidewalks were the **** signs are pretty","choices":["Ti-22","F-9","Ne-10","Zr-40"],"answerIndex":2,
+                 {"name": "Neon", "symbol": "Ne", "elementQuestion": "Downtown (song) ...Linger on the sidewalks were the **** signs are pretty","choices":["Ti-22","F-9","Ne-10","Zr-40"],"answerIndex":2,
                  "factoid": "Neon(Ne-10) is used to make neon signs "},
                  {"name": "Carbon", "symbol": "C", "elementQuestion": "The elemental form of this includes one of the hardest substances and one of the softest ","choices":["Na-11","Sn-50","Rn-86","C-6"],"answerIndex":3,
-                 "factoid": "Carbon(C-6) elemental allotropic forms include diamond (hard) and graphite (soft)"}
+                 "factoid": "Carbon(C-6) elemental allotropic forms include diamond (hard) and graphite (soft)"},
 
+                 {"name": "Gold", "symbol": "Au", "elementQuestion": "Latin name means 'glow of sunrise'","choices":["Po-84","Au-79","Pd-46","Ir-77"],"answerIndex":1,
+                 "factoid": "Gold(Au-79) from the latin name aurum"},
+                 {"name": "Uranium", "symbol": "U", "elementQuestion": "3-Mile is not a rapper from Pennsylvania","choices":["Ni-28","N-7","Am-95","U-92"],"answerIndex":3,
+                 "factoid": "Uranium(U-92) isotope U-235 is used in nuclear reactors"},
+                 {"name": "Titanium", "symbol": "Ti", "elementQuestion": "Named after Greek gods","choices":["As-33","Ti-22","Rn-86","B-5"],"answerIndex":1,
+                 "factoid": "Titanium(Ti-22) was named after the Titans of Greek mythology"},
+                 {"name": "Iodine", "symbol": "I", "elementQuestion": "Seafood and kelp are natural food sources of this","choices":["Ti-22","F-9","I-53","Mn-25"],"answerIndex":2,
+                 "factoid": "Iodine(I-53) - a small amount is essential for nutrition "},
+                 {"name": "Sodium", "symbol": "Na", "elementQuestion": "Compounds of this element are used in food preservation","choices":["K-19","Na-11","Fe-26","P-15"],"answerIndex":1,
+                 "factoid": "Sodium(Na-11) - important in maintaining fluid balance in human cells"}
+
+   
                 ];
+
 
 
 // ----------------------------------------------------------
