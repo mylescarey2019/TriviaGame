@@ -188,7 +188,7 @@ $(document).ready(function(){
   // screen texts
   
   var instructionText = "There are 5 questions per quiz/trivia round." + "<br>" + "You have 25 seconds per question" + 
-                        "<br>" + "Press Start when ready" 
+                        "<br>" + "Press Start when ready.  You can Restart after you have finished all rounds." 
   
   
   // var questionText = "Sorry" + "<br>" + "The correct answer is Li-3." + "<br>" 
@@ -666,13 +666,18 @@ $(document).ready(function(){
     constructor(numberOfQuestions) { //,availableQuestions,questionArray) {
       console.log("in constructor.QuestionPool");
       this.numberOfQuestions = numberOfQuestions;
-  
+      // array of available qustion index numbers
+      this.availableQuestions = [];
+      // array of question objects
+      this.questionArray = [];
+
       // intended to be a correlation index into array of question objects using indexOf()
       // this would be to randomly select the next question
       // this.availableQuestions = availableQuestions;
       // // array of question objects
       // this.questionArray = questionArray
 
+      // array of available qustion index numbers
       this.availableQuestions = [];
       // array of question objects
       this.questionArray = [];
@@ -818,7 +823,7 @@ $(document).ready(function(){
   $("#start-restart").on("click", function(event) {
     event.preventDefault();
     console.log("in start-restart.on.click");
-    $(this).prop("disabled",false);
+    $(this).prop("disabled",true);
   
     $(".bg-danger").attr("style","width: 0%");
     $(".bg-success").attr("style","width: 0%");
