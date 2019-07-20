@@ -8,7 +8,7 @@ This is a quiz game (trivia) themed on the Periodic Table of Elements.
 The design  is a repsonsive first using HTML, CSS, Bootstrap, javascript and JQuery(for all dynamic page activity).
 The player will answer a series of 5 multiple choice questions.  The player is allotted 25 seconds to answer each question.
 After answering page will show the results/correct answer and pause for 7 seconds until next question loads.
-After 150 questions the player will be shown there results:  correct, incorrect and time-expired and then given chance to play
+After 15 questions the player will be shown there results:  correct, incorrect and time-expired and then given chance to play
 another set of 5 questions.  There will also be a progress bar visible during play showing correct and incorrect bars.
 Once all sets of questions have been used the player will have an option to restart the whole series of questions sets again.
 
