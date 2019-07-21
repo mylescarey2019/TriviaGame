@@ -163,8 +163,8 @@ $(document).ready(function(){
   var questionTimer;
   var intermissionTimer;
   // keep these in sync
-  var questionTimeConstant = 25;
-  var intermissionTimeConstant = 6;
+  var questionTimeConstant = 15;
+  var intermissionTimeConstant = 5;
   var questionTime = questionTimeConstant;
   var intermissionTime = intermissionTimeConstant;
   var correctAnswersSet = 0;
@@ -185,7 +185,7 @@ $(document).ready(function(){
   // screen texts
   
   var instructionText = "There are " + setSize + " questions per quiz and there are " + numberOfSetsConstant +
-                         " quizzes." + "<br>" + "You have 25 seconds per question" + 
+                         " quizzes." + "<br>" + "You have 15 seconds per question" + 
                         "<br>" + "Press Start when ready.  You can Restart after you have finished all quizzes in total." 
   
   
@@ -618,7 +618,7 @@ $(document).ready(function(){
                    {"name": "Gold", "symbol": "Au", "elementQuestion": "Latin name means 'glow of sunrise'","choices":["Po-84","Au-79","Pd-46","Ir-77"],"answerIndex":1,
                    "factoid": "Gold(Au-79) from the latin name aurum"},
                    {"name": "Uranium", "symbol": "U", "elementQuestion": "3-Mile is not a rapper from Pennsylvania","choices":["Ni-28","N-7","Am-95","U-92"],"answerIndex":3,
-                   "factoid": "Uranium(U-92) isotope U-235 is used in nuclear reactors"},
+                   "factoid": "Uranium(U-92) isotope U-235 is used in nuclear reactors like 3-Mile Island"},
                    {"name": "Titanium", "symbol": "Ti", "elementQuestion": "Named after Greek gods","choices":["As-33","Ti-22","Rn-86","B-5"],"answerIndex":1,
                    "factoid": "Titanium(Ti-22) was named after the Titans of Greek mythology"},
                    {"name": "Iodine", "symbol": "I", "elementQuestion": "Seafood and kelp are natural food sources of this","choices":["Ti-22","F-9","I-53","Mn-25"],"answerIndex":2,
