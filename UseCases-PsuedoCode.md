@@ -4,20 +4,25 @@ Trivia Game - Periodic Table of Elements
 
 ## Description
 
-User answers multipl choice questions by clicking on list item while countdown timer
-provides up to 30 seconds to answer.  Correct answer, incorrect answer and time expired
-show different results content.  After completing all 10 questions chance to play again.
-Planning on pool of 30 questions which will not repeat until three sets of 10 played.
-Start button to begin game and next 10 to continue with restart after 3 sets exhausted.
+User answers e choice questions by clicking on list item while countdown timer
+provides up to 15 seconds to answer.  Correct answer, incorrect answer and time expired
+show different results content.  After completing all 15 questions chance to play again.
+Planning on pool of 15 questions which will not repeat until three sets of 5 played.
+Start button to begin game and next 5 to continue with restart after 3 sets exhausted.
 
 ![preliminary wireframe drawing](assets/images/wireframe0.png)
 
 ## Requirement Note
 
 Intend to leverage Bootstrap due to need for more practice and desire to make responsive.
+Intend to make use of some javascript Classes.
 
 
 ## User Stories / Use Cases
+
+0.  This was the intended Use Case and program flow - final result was close to this
+    although some differences to evolve during development.  See javascript code header
+    for more details.
 
 1.  game starts in browser 
     1. page has header bar with title on left start and next set buttons on right
