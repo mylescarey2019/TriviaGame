@@ -767,19 +767,20 @@ $(document).ready(function(){
   //  cancel the question timer &  start the intermission timer
   $(".list-group-item-light").on("click", function(e) {
     console.log("in list-group-item-light.on.click");
-    // console.log("CLICK: " + e.type);
-    // console.log("CLICK: " + e.which);
-    // console.log("CLICK: " + e.target);
+    console.log("CLICK: " + e.type);
+    console.log("CLICK: " + e.which);
+    console.log("CLICK: " + e.target);
     var button = $(event.target).closest('button');
-    // console.log("You clicked on: ", button);
-    // console.log("that was: ", button.innerText);
-    // console.log("value is:  ", $(this).val());
+    console.log("You clicked on: ", button);
+    console.log("that was: ", button.innerText);
+    console.log("value is:  ", $(this).val());
    
     // stop the question timer
     stopQuestionCountdown();
     // decrement questions remaining
     questionsRemainingInSet--;
     // show the answer - 2nd parameter is if timeOut occured, which it did not
+    // convert string value to integer using +
     showAnswer(currentQuestionInPlay.isCorrect(+$(this).val()),false);
     startIntermissionCountdown(); 
   });

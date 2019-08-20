@@ -18,6 +18,9 @@ play again, via the restart button, if desired.
 
 During the sets of quizzes the 15 questions are presented randomly and no question will appear more than once.
 
+## Deployed Page:
+https://mylescarey2019.github.io/TriviaGame/
+
 ![Periodic Element Quis](assets/images/wireframe1.png)
 
 
