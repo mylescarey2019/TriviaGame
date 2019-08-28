@@ -3,23 +3,23 @@
 Trivia Game - Periodic Table of Elements
 
 ## Description
- 
-This is a quiz game (trivia) themed on the Periodic Table of Elements.
-The design  is a repsonsive using HTML, CSS, Bootstrap, javascript (including use of Classes) and JQuery(for all dynamic page activity).
 
-The player will answer a series of 5 multiple choice questions.  The player is allotted 15 seconds to answer each question.
-After answering page will show the results/correct answer and pause for 5 seconds to permit the answer and factoid to 
-be read before the next question loads.  A progress bar is visible showing the % correct and incorrect on the current quiz.  
+This is a quiz game (trivia) themed on the Periodic Table of Elements.  The design  is a repsonsive using HTML, CSS, Bootstrap, javascript (including use of Classes) and JQuery(for all dynamic page activity).
 
-After the 5 question quiz is finished the player will be shown there results:  correct, incorrect and time-expired and then given chance to play the next quiz.
+The player will answer a series of 5 multiple choice questions.  The player is allotted 15 seconds to answer each question.  After answering the play is paused for 5 seconds to permit the answer and factoid to be read before the next question loads.  A progress bar is visible showing the % correct and incorrect on the current quiz.  
 
-After completing all 3 quizzes the grand total results and progress bar will be shown.  The player than can choose to
-play again, via the restart button, if desired.  
+After the 5 question quiz is finished the player will be shown there results:  correct, incorrect and time-expired and then given chance to play the next quiz.  After completing all 3 quizzes the grand total results and progress bar will be shown.  The player than can choose to play again via the restart button.
 
-During the sets of quizzes the 15 questions are presented randomly and no question will appear more than once.
+During the sets of quizzes the 15 questions are presented randomly and no question will appear more than once. 
 
 ## Deployed Page:
 https://mylescarey2019.github.io/TriviaGame/
+
+## Play Example:
+
+![play-example](./assets/images/play-example.gif)
+
+## Screen Capture:
 
 ![Periodic Element Quis](assets/images/wireframe1.png)
 
@@ -52,7 +52,7 @@ Myles Carey
 mylescarey2019@gmail.com 
 
 ## Version History
- 
+
 * 0.1
     * Initial Release
 

@@ -566,17 +566,17 @@ $(document).ready(function(){
   // ----------------------------------------------------------
   // class for Question
   // ----------------------------------------------------------
-  // - try to refactored using deconstruction 
+  // - refactored using deconstruction 
   // - refactored using class
   class Question {
-    constructor(array) {
+    constructor({name, symbol,elementQuestion,choices,answerIndex,factoid}) {
       console.log("in constructor.Question");
-      this.name = array.name;
-      this.symbol = array.symbol;
-      this.elementQuestion = array.elementQuestion;
-      this.choices = array.choices;
-      this.answerIndex = array.answerIndex;
-      this.factoid = array.factoid;
+      this.name = name;
+      this.symbol = symbol;
+      this.elementQuestion = elementQuestion;
+      this.choices = choices;
+      this.answerIndex = answerIndex;
+      this.factoid = factoid;
     }
   
     // method to determine if answer is correct
