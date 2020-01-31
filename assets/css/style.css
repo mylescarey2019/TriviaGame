@@ -11,7 +11,7 @@ CSS - Periodic Table Trivia Game
   max-width: 1024px;
   margin-left: auto;
   margin-right: auto;
-  opacity: 50%;
+  opacity: 95%;
   background-color: none;
 }
 
@@ -40,7 +40,8 @@ body {
   /* width: 600px; */
   visibility: visible;
   /* background: rgba(194,196,197, 0.85); */
-  background-color: rgba(190,183,171,.9);
+  
+  background-color: rgba(190, 183, 171, 1.0);
   font-weight: bolder;
   margin-left: 5%;
   margin-right: 5%;
